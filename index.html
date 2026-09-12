@@ -109,6 +109,15 @@
     .res-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; color: #d1c2b5; }
     .res-row.highlight { color: #f5ebe0; font-weight: 700; background: rgba(255,255,255,0.05); padding: 4px 6px; border-radius: 6px; }
     .hw-subrow { font-size: 11px; color: #a89485; padding-left: 10px; margin-bottom: 3px; display: flex; justify-content: space-between; }
+    
+    /* Sheet Badge Box Styling */
+    .sheet-badge { 
+      background: #3d2319; 
+      border: 1px solid #5c4132; 
+      padding: 10px; 
+      border-radius: 10px; 
+      margin: 10px 0; 
+    }
 
     .res-total {
       border-top: 1px dashed #5c4132; margin-top: 10px; padding-top: 10px;
@@ -262,6 +271,15 @@
     <div class="res-row highlight"><span>Total Shelves Area:</span><strong id="totalShelvesAreaText">0 Sq. Ft.</strong></div>
     <div class="res-row highlight"><span>Total Carcass Area:</span><strong id="carcassSqftText">0 Sq. Ft.</strong></div>
 
+    <!-- WORKSHOP SHEET REQUIREMENT (8x4 Feet Sheets) -->
+    <div class="sheet-badge">
+      <div style="font-size:10px; font-weight:800; color:var(--accent); margin-bottom:4px; text-transform:uppercase;"><i class="fa-solid fa-warehouse"></i> Workshop Sheet Count (8x4 ft)</div>
+      <div class="res-row"><span>• Plywood Sheets (Carcass):</span><strong id="plywoodSheetsText" style="color:#fff;">0 Sheets</strong></div>
+      <div class="res-row"><span>• Outer Mica Sheets:</span><strong id="micaSheetsText" style="color:#fff;">0 Sheets</strong></div>
+      <div class="res-row"><span>• Inner Liner Mica Sheets:</span><strong id="linerSheetsText" style="color:#fff;">0 Sheets</strong></div>
+      <div class="res-row"><span>• Backing Sheet (6mm):</span><strong id="backSheetsText" style="color:#fff;">0 Sheets</strong></div>
+    </div>
+
     <div style="border-top:1px solid #4a3427; margin:10px 0; padding-top:6px;"></div>
     
     <div class="res-row"><span>Inner Structure Board Cost:</span><span id="carcassCostText">₹0</span></div>
@@ -379,7 +397,7 @@
     adminPin: '1234'
   };
 
-  let backend = JSON.parse(localStorage.getItem('cupboard_v14_backend')) || defaultBackend;
+  let backend = JSON.parse(localStorage.getItem('cupboard_v15_backend')) || defaultBackend;
   backend.labourRate = 300;
 
   let lastEstimate = null;
@@ -432,8 +450,13 @@
     let extraFramesWastage = (h * w) * 0.12; 
     let totalCarcassSqft = outerSides + outerTopBottom + innerPartitionsArea + totalShelvesArea + extraFramesWastage;
 
-    let labourCost = frontSqft * backend.labourRate;
+    // Sheet Calculation (8x4 feet = 32 Sq Ft per sheet with 15% cutting wastage included)
+    let plywoodSheetsCount = Math.ceil((totalCarcassSqft + (frontSqft * 0.8)) * 1.15 / 32);
+    let outerMicaSheetsCount = Math.ceil((frontSqft * 1.12) / 32);
+    let linerMicaSheetsCount = Math.ceil((totalCarcassSqft * 1.12) / 32);
+    let backSheetsCount = Math.ceil((frontSqft * 1.08) / 32);
 
+    let labourCost = frontSqft * backend.labourRate;
     let hingeCost = numHinges * backend.hingeRate;
     let lockCost = numLocks * backend.lockRate;
 
@@ -473,6 +496,12 @@
     document.getElementById('totalShelvesAreaText').innerText = `${numShelves} Shelves = ${totalShelvesArea.toFixed(1)} Sq. Ft.`;
     document.getElementById('carcassSqftText').innerText = `${Math.round(totalCarcassSqft)} Sq. Ft.`;
 
+    // Display Sheet Counts inside Badge
+    document.getElementById('plywoodSheetsText').innerText = `${plywoodSheetsCount} Sheets (8x4)`;
+    document.getElementById('micaSheetsText').innerText = `${outerMicaSheetsCount} Sheets (8x4)`;
+    document.getElementById('linerSheetsText').innerText = `${linerMicaSheetsCount} Sheets (8x4)`;
+    document.getElementById('backSheetsText').innerText = `${backSheetsCount} Sheets (8x4)`;
+
     document.getElementById('carcassCostText').innerText = `₹${Math.round(carcassTotalCost)}`;
     document.getElementById('doorCostText').innerText = `₹${Math.round(doorTotalCost)}`;
     document.getElementById('micaCostText').innerText = `₹${Math.round(micaTotalCost)}`;
@@ -507,7 +536,7 @@
 
     document.getElementById('resultCard').style.display = 'block';
 
-    lastEstimate = { h, w, d, frontSqft, totalCarcassSqft, micaName, micaTotalCost, linerMicaName, linerMicaTotalCost, labourCost, numHinges, hingeCost, numLocks, lockCost, fevicolKg, fevicolCost, heatxKg, heatxCost, totalHardwareCost, grandTotal };
+    lastEstimate = { h, w, d, frontSqft, plywoodSheetsCount, outerMicaSheetsCount, linerMicaSheetsCount, backSheetsCount, micaName, linerMicaName, grandTotal };
   }
 
   function shareWhatsApp() {
@@ -520,16 +549,11 @@
       `----------------------------%0A` +
       `📏 *Size:* ${lastEstimate.h}ft x ${lastEstimate.w}ft (Depth: ${lastEstimate.d}ft)%0A` +
       `📐 *Front Area:* ${lastEstimate.frontSqft.toFixed(1)} Sq.Ft%0A` +
-      `✨ *Outer Mica:* ${lastEstimate.micaName} (₹${Math.round(lastEstimate.micaTotalCost)})%0A` +
-      `🪵 *Inner Liner Mica:* ${lastEstimate.linerMicaName} (₹${Math.round(lastEstimate.linerMicaTotalCost)})%0A` +
-      `🔨 *Labour Charge:* ₹${Math.round(lastEstimate.labourCost)} (@₹${backend.labourRate}/sqft)%0A` +
-      `----------------------------%0A` +
-      `🔧 *Hardware & Adhesives:* ₹${lastEstimate.totalHardwareCost}%0A` +
-      `• Hinges/Kabze (${lastEstimate.numHinges} Pcs): ₹${lastEstimate.hingeCost}%0A` +
-      `• Locks (${lastEstimate.numLocks} Pcs): ₹${lastEstimate.lockCost}%0A` +
-      `• Fevicol Glue (${lastEstimate.fevicolKg} Kg): ₹${lastEstimate.fevicolCost}%0A` +
-      `• HeatX Glue (${lastEstimate.heatxKg} Kg): ₹${lastEstimate.heatxCost}%0A` +
-      `• Edge Banding & Extra Fittings Included%0A` +
+      `📦 *Material Sheets (8x4):*%0A` +
+      `  • Plywood: ${lastEstimate.plywoodSheetsCount} Sheets%0A` +
+      `  • Outer Mica: ${lastEstimate.outerMicaSheetsCount} Sheets%0A` +
+      `  • Liner Mica: ${lastEstimate.linerMicaSheetsCount} Sheets%0A` +
+      `  • Backing Sheet: ${lastEstimate.backSheetsCount} Sheets%0A` +
       `----------------------------%0A` +
       `💰 *Estimated Total:* ₹${Math.round(lastEstimate.grandTotal)}%0A%0A` +
       `_Note: Quotation valid after physical site inspection._`;
@@ -605,7 +629,7 @@
     }
 
     backend[cat][name] = rate;
-    localStorage.setItem('cupboard_v14_backend', JSON.stringify(backend));
+    localStorage.setItem('cupboard_v15_backend', JSON.stringify(backend));
     populateDropdowns();
     document.getElementById('newMatName').value = '';
     document.getElementById('newMatRate').value = '';
@@ -637,7 +661,7 @@
       backend.adminPin = newPin;
     }
 
-    localStorage.setItem('cupboard_v14_backend', JSON.stringify(backend));
+    localStorage.setItem('cupboard_v15_backend', JSON.stringify(backend));
     populateDropdowns();
     closeAdmin();
     alert('Saare rates successfully save ho gaye hain!');
