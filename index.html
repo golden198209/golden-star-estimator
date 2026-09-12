@@ -199,15 +199,19 @@
     </div>
   </div>
 
-  <!-- 3. Material Selection -->
-  <div class="section-header"><i class="fa-solid fa-layer-group"></i> 3. Material Specifications</div>
+  <!-- 3. Material & Mica Selection -->
+  <div class="section-header"><i class="fa-solid fa-layer-group"></i> 3. Material & Outer Mica</div>
   <div class="select-box">
     <label>INNER STRUCTURE / CARCASS (18mm)</label>
     <select id="carcassSelect"></select>
   </div>
   <div class="select-box">
-    <label>DOORS / SHUTTERS (18mm/19mm)</label>
+    <label>DOORS / SHUTTERS BOARD</label>
     <select id="doorSelect"></select>
+  </div>
+  <div class="select-box">
+    <label>OUTER MICA FINISH & THICKNESS</label>
+    <select id="micaSelect"></select>
   </div>
   <div class="select-box">
     <label>BACKING SHEET (6mm/8mm)</label>
@@ -257,7 +261,8 @@
     <div style="border-top:1px solid #4a3427; margin:10px 0; padding-top:6px;"></div>
     
     <div class="res-row"><span>Inner Structure Cost:</span><span id="carcassCostText">₹0</span></div>
-    <div class="res-row"><span>Shutters / Doors Cost:</span><span id="doorCostText">₹0</span></div>
+    <div class="res-row"><span>Shutters Board Cost:</span><span id="doorCostText">₹0</span></div>
+    <div class="res-row"><span>Outer Mica Cost:</span><span id="micaCostText">₹0</span></div>
     <div class="res-row"><span>Back Ply Cost:</span><span id="backCostText">₹0</span></div>
     <div class="res-row" style="color:#f5ebe0; font-weight:700;"><span>Labour Charges (@ ₹<span id="labourRateText">300</span>/Sq.Ft):</span><span id="labourCostText">₹0</span></div>
 
@@ -288,9 +293,9 @@
   <div class="modal-content">
     <h3 style="color:var(--primary); margin-top:0;">Admin Panel - Material & Rates</h3>
     
-    <!-- EDIT EXISTING PLYWOOD/MICA RATES -->
+    <!-- EDIT EXISTING RATES -->
     <div style="border-bottom:1px solid #e0cdbc; padding-bottom:12px; margin-bottom:12px;">
-      <h4 style="margin:0 0 8px 0; color:var(--accent);"><i class="fa-solid fa-pen-to-square"></i> Edit Material Rates (₹ / Sq.Ft)</h4>
+      <h4 style="margin:0 0 8px 0; color:var(--accent);"><i class="fa-solid fa-pen-to-square"></i> Edit Material & Mica Rates (₹ / Sq.Ft)</h4>
       <div id="materialRatesForm"></div>
     </div>
 
@@ -302,25 +307,26 @@
 
     <!-- NEW MATERIAL ADD-ON SECTION -->
     <div style="border-bottom:1px solid #e0cdbc; padding-bottom:12px; margin-bottom:12px;">
-      <h4 style="margin:0 0 8px 0; color:var(--accent);"><i class="fa-solid fa-plus-circle"></i> Add New Plywood / Board Material</h4>
+      <h4 style="margin:0 0 8px 0; color:var(--accent);"><i class="fa-solid fa-plus-circle"></i> Add New Material / Mica Option</h4>
       <div class="admin-group">
         <label>Category</label>
         <select id="newMatCategory">
           <option value="carcass">Inner Structure (Carcass)</option>
-          <option value="doors">Doors / Shutters</option>
+          <option value="doors">Doors / Shutters Board</option>
+          <option value="mica">Outer Mica Finish</option>
           <option value="backing">Backing Sheet</option>
         </select>
       </div>
       <div class="admin-group">
-        <label>Material Name / Quality</label>
-        <input type="text" id="newMatName" placeholder="e.g. 18mm Century BWP Ply">
+        <label>Name / Quality</label>
+        <input type="text" id="newMatName" placeholder="e.g. Matte Finish 1mm">
       </div>
       <div class="admin-group">
         <label>Rate Per Sq. Ft. (₹)</label>
-        <input type="number" id="newMatRate" placeholder="e.g. 165">
+        <input type="number" id="newMatRate" placeholder="e.g. 85">
       </div>
       <button class="rates-btn" style="width:100%; background:#2c1810; color:#fff; justify-content:center; margin-top:5px;" onclick="addNewMaterial()">
-        + Add Material Option
+        + Add Option
       </button>
     </div>
 
@@ -341,10 +347,18 @@
   let defaultBackend = {
     carcass: { '18mm Commercial Ply': 110, '18mm HDMR Board': 125, '18mm Marine Ply': 145 },
     doors: { '19mm Pine Blockboard': 130, '18mm HDMR Door': 120, '18mm Commercial Ply': 110 },
+    mica: { 
+      'Matte Finish (0.8mm)': 60, 
+      'Matte Finish (1.0mm)': 85, 
+      'Glossy Finish (0.8mm)': 75, 
+      'Glossy Finish (1.0mm)': 105, 
+      'Texture Finish (0.8mm)': 80, 
+      'Texture Finish (1.0mm)': 115 
+    },
     backing: { '6mm Commercial Back Ply': 30, '6mm Marine Back Ply': 45, '8mm HDMR Backing': 50 },
     
-    labourRate: 300,       
-    hingeRate: 250,        
+    labourRate: 300,        
+    hingeRate: 250,         
     lockRate: 300,          
     fevicolRate: 600,       
     heatxRate: 600,
@@ -354,7 +368,7 @@
     adminPin: '1234'
   };
 
-  let backend = JSON.parse(localStorage.getItem('cupboard_v11_backend')) || defaultBackend;
+  let backend = JSON.parse(localStorage.getItem('cupboard_v12_backend')) || defaultBackend;
   backend.labourRate = 300;
 
   let lastEstimate = null;
@@ -362,6 +376,7 @@
   function populateDropdowns() {
     fillSelect('carcassSelect', backend.carcass, '/sq.ft');
     fillSelect('doorSelect', backend.doors, '/sq.ft');
+    fillSelect('micaSelect', backend.mica, '/sq.ft');
     fillSelect('backSelect', backend.backing, '/sq.ft');
   }
 
@@ -420,20 +435,23 @@
 
     let carcassName = document.getElementById('carcassSelect').value;
     let doorName = document.getElementById('doorSelect').value;
+    let micaName = document.getElementById('micaSelect').value;
     let backName = document.getElementById('backSelect').value;
 
     let carcassRate = backend.carcass[carcassName] || 0;
     let doorRate = backend.doors[doorName] || 0;
+    let micaRate = backend.mica[micaName] || 0;
     let backRate = backend.backing[backName] || 0;
 
     let carcassTotalCost = totalCarcassSqft * carcassRate;
     let doorTotalCost = frontSqft * doorRate;
+    let micaTotalCost = frontSqft * micaRate;
     let backTotalCost = frontSqft * backRate;
 
     let extraDrawers = drawers > 3 ? (drawers - 3) : 0;
     let drawerTotalCost = extraDrawers * backend.extraDrawerRate;
 
-    let grandTotal = carcassTotalCost + doorTotalCost + backTotalCost + labourCost + totalHardwareCost + drawerTotalCost;
+    let grandTotal = carcassTotalCost + doorTotalCost + micaTotalCost + backTotalCost + labourCost + totalHardwareCost + drawerTotalCost;
 
     document.getElementById('sqftText').innerText = `${frontSqft.toFixed(1)} Sq. Ft.`;
     document.getElementById('singleShelfText').innerText = `${shelfLength.toFixed(1)}ft x ${d}ft (${singleShelfSqft.toFixed(1)} Sq.Ft)`;
@@ -442,6 +460,7 @@
 
     document.getElementById('carcassCostText').innerText = `₹${Math.round(carcassTotalCost)}`;
     document.getElementById('doorCostText').innerText = `₹${Math.round(doorTotalCost)}`;
+    document.getElementById('micaCostText').innerText = `₹${Math.round(micaTotalCost)}`;
     document.getElementById('backCostText').innerText = `₹${Math.round(backTotalCost)}`;
 
     document.getElementById('labourRateText').innerText = backend.labourRate;
@@ -472,7 +491,7 @@
 
     document.getElementById('resultCard').style.display = 'block';
 
-    lastEstimate = { h, w, d, frontSqft, totalCarcassSqft, labourCost, numHinges, hingeCost, numLocks, lockCost, fevicolKg, fevicolCost, heatxKg, heatxCost, totalHardwareCost, grandTotal };
+    lastEstimate = { h, w, d, frontSqft, totalCarcassSqft, micaName, micaTotalCost, labourCost, numHinges, hingeCost, numLocks, lockCost, fevicolKg, fevicolCost, heatxKg, heatxCost, totalHardwareCost, grandTotal };
   }
 
   function shareWhatsApp() {
@@ -485,7 +504,7 @@
       `----------------------------%0A` +
       `📏 *Size:* ${lastEstimate.h}ft x ${lastEstimate.w}ft (Depth: ${lastEstimate.d}ft)%0A` +
       `📐 *Front Area:* ${lastEstimate.frontSqft.toFixed(1)} Sq.Ft%0A` +
-      `🪵 *Carcass Material:* ~${Math.round(lastEstimate.totalCarcassSqft)} Sq.Ft%0A` +
+      `✨ *Outer Mica:* ${lastEstimate.micaName} (₹${Math.round(lastEstimate.micaTotalCost)})%0A` +
       `🔨 *Labour Charge:* ₹${Math.round(lastEstimate.labourCost)} (@₹${backend.labourRate}/sqft)%0A` +
       `----------------------------%0A` +
       `🔧 *Hardware & Adhesives:* ₹${lastEstimate.totalHardwareCost}%0A` +
@@ -514,7 +533,8 @@
     let matHtml = '';
     let categories = [
       { id: 'carcass', title: 'Inner Structure (Carcass)' },
-      { id: 'doors', title: 'Doors / Shutters' },
+      { id: 'doors', title: 'Doors / Shutters Board' },
+      { id: 'mica', title: 'Outer Mica Finish (Matte / Glossy / Texture)' },
       { id: 'backing', title: 'Backing Sheet' }
     ];
 
@@ -562,17 +582,17 @@
     let rate = parseFloat(document.getElementById('newMatRate').value) || 0;
 
     if(!name || rate <= 0) {
-      alert('Kripya Sahi Material Name aur Rate bharein!');
+      alert('Kripya Sahi Name aur Rate bharein!');
       return;
     }
 
     backend[cat][name] = rate;
-    localStorage.setItem('cupboard_v11_backend', JSON.stringify(backend));
+    localStorage.setItem('cupboard_v12_backend', JSON.stringify(backend));
     populateDropdowns();
     document.getElementById('newMatName').value = '';
     document.getElementById('newMatRate').value = '';
     openAdmin();
-    alert(`Naya Material "${name}" ₹${rate}/sq.ft ke sath add ho gaya hai!`);
+    alert(`Option "${name}" ₹${rate}/sq.ft ke sath add ho gaya hai!`);
   }
 
   function saveRates() {
@@ -599,10 +619,10 @@
       backend.adminPin = newPin;
     }
 
-    localStorage.setItem('cupboard_v11_backend', JSON.stringify(backend));
+    localStorage.setItem('cupboard_v12_backend', JSON.stringify(backend));
     populateDropdowns();
     closeAdmin();
-    alert('Saare Material, Labour aur Adhesive Rates save ho gaye hain!');
+    alert('Saare rates successfully save ho gaye hain!');
   }
 
   populateDropdowns();
