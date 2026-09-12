@@ -379,7 +379,7 @@
     adminPin: '1234'
   };
 
-  let backend = JSON.parse(localStorage.getItem('cupboard_v13_backend')) || defaultBackend;
+  let backend = JSON.parse(localStorage.getItem('cupboard_v14_backend')) || defaultBackend;
   backend.labourRate = 300;
 
   let lastEstimate = null;
@@ -605,7 +605,7 @@
     }
 
     backend[cat][name] = rate;
-    localStorage.setItem('cupboard_v13_backend', JSON.stringify(backend));
+    localStorage.setItem('cupboard_v14_backend', JSON.stringify(backend));
     populateDropdowns();
     document.getElementById('newMatName').value = '';
     document.getElementById('newMatRate').value = '';
@@ -637,7 +637,7 @@
       backend.adminPin = newPin;
     }
 
-    localStorage.setItem('cupboard_v13_backend', JSON.stringify(backend));
+    localStorage.setItem('cupboard_v14_backend', JSON.stringify(backend));
     populateDropdowns();
     closeAdmin();
     alert('Saare rates successfully save ho gaye hain!');
