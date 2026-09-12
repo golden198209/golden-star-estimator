@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Golden Star - Cupboard Cost Estimator</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2c1810;
+      --accent: #b87333;
+      --accent-light: #f5ebe0;
+      --bg: #1a0f0a;
+      --card-bg: #ffffff;
+      --text-main: #2b1a10;
+      --text-muted: #7a685d;
+      --border: #e6ded6;
+    }
+
+    * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+
+    body {
+      background: linear-gradient(135deg, #2c1810 0%, #0f0805 100%);
+      color: var(--text-main);
+      margin: 0;
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 440px;
+      background: var(--card-bg);
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand i {
+      font-size: 22px;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 10px;
+      border-radius: 12px;
+    }
+
+    .brand-title h2 { margin: 0; font-size: 18px; color: var(--primary); font-weight: 800; }
+    .brand-title p { margin: 0; font-size: 11px; color: var(--text-muted); font-weight: 600; }
+
+    .rates-btn {
+      background: var(--accent-light);
+      color: var(--primary);
+      border: 1px solid #e0cdbc;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-header {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin: 18px 0 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dim-row { display: flex; gap: 12px; }
+    
+    .input-box {
+      flex: 1;
+      background: #fdfbf7;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 14px;
+      transition: all 0.2s;
+    }
+
+    .input-box:focus-within {
+      border-color: var(--accent);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(184, 115, 51, 0.15);
+    }
+
+    .input-box label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; }
+    .input-box input {
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* Option Cards (Grid Selector) */
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .opt-card {
+      background: #fdfbf7;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .opt-card.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(44, 24, 16, 0.3);
+    }
+
+    .opt-card.active .opt-price { color: var(--accent); }
+
+    .opt-title { font-size: 11px; font-weight: 700; display: block; line-height: 1.2; margin-bottom: 4px; }
+    .opt-price { font-size: 10px; font-weight: 600; color: var(--text-muted); display: block; }
+
+    .btn-calc {
+      width: 100%;
+      background: linear-gradient(135deg, #b87333 0%, #2c1810 100%);
+      color: #fff;
+      border: none;
+      padding: 15px;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 22px;
+      box-shadow: 0 8px 20px rgba(184, 115, 51, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Receipt Style Output */
+    .result-card {
+      margin-top: 20px;
+      background: #2c1810;
+      color: #fff;
+      border-radius: 18px;
+      padding: 18px;
+      display: none;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .res-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 8px;
+      color: #d1c2b5;
+    }
+
+    .res-row strong { color: #fff; }
+
+    .res-total {
+      border-top: 1px dashed #5c4132;
+      margin-top: 12px;
+      padding-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .res-total span { font-size: 13px; font-weight: 600; color: #d1c2b5; }
+    .res-total h3 { margin: 0; font-size: 22px; color: var(--accent); font-weight: 800; }
+
+    .whatsapp-btn {
+      width: 100%;
+      background: #25D366;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      backdrop-filter: blur(4px);
+    }
+    .modal-content {
+      background: #fff;
+      padding: 22px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 400px;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+    .admin-group { margin-bottom: 12px; }
+    .admin-group label { font-size: 12px; font-weight: 700; color: var(--primary); }
+    .admin-group input { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 8px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- Top Bar -->
+  <div class="header">
+    <div class="brand">
+      <i class="fa-solid fa-couch"></i>
+      <div class="brand-title">
+        <h2>Cupboard Calc</h2>
+        <p>QUICK ESTIMATOR</p>
+      </div>
+    </div>
+    <button class="rates-btn" onclick="openAdmin()">
+      <i class="fa-solid fa-sliders"></i> Rates
+    </button>
+  </div>
+
+  <!-- Step 1: Dimensions -->
+  <div class="section-header">
+    <i class="fa-solid fa-ruler-combined"></i> 1. Size Dimensions
+  </div>
+  <div class="dim-row">
+    <div class="input-box">
+      <label>HEIGHT (FT)</label>
+      <input type="number" id="height" placeholder="7" step="0.1">
+    </div>
+    <div class="input-box">
+      <label>WIDTH (FT)</label>
+      <input type="number" id="width" placeholder="6" step="0.1">
+    </div>
+  </div>
+
+  <!-- Step 2: Material -->
+  <div class="section-header">
+    <i class="fa-solid fa-layer-group"></i> 2. Base Material
+  </div>
+  <div class="option-grid" id="materialGrid"></div>
+
+  <!-- Step 3: Finish -->
+  <div class="section-header">
+    <i class="fa-solid fa-brush"></i> 3. Outer Finish
+  </div>
+  <div class="option-grid" id="finishGrid"></div>
+
+  <!-- Step 4: Hardware -->
+  <div class="section-header">
+    <i class="fa-solid fa-screwdriver-wrench"></i> 4. Hardware Quality
+  </div>
+  <div class="option-grid" id="hardwareGrid"></div>
+
+  <!-- Calculate Button -->
+  <button class="btn-calc" onclick="calculate()">
+    <i class="fa-solid fa-calculator"></i> Calculate Cost
+  </button>
+
+  <!-- Output Result -->
+  <div class="result-card" id="resultCard">
+    <div class="res-row">
+      <span>Total Area:</span>
+      <strong id="sqftText">0 Sq. Ft.</strong>
+    </div>
+    <div class="res-row">
+      <span>Board Material:</span>
+      <span id="boardCostText">₹0</span>
+    </div>
+    <div class="res-row">
+      <span>Laminate Finish:</span>
+      <span id="finishCostText">₹0</span>
+    </div>
+    <div class="res-row">
+      <span>Hardware Fitting:</span>
+      <span id="hardwareCostText">₹0</span>
+    </div>
+
+    <div class="res-total">
+      <span>Estimated Total</span>
+      <h3 id="totalText">₹0</h3>
+    </div>
+
+    <button class="whatsapp-btn" onclick="shareWhatsApp()">
+      <i class="fa-brands fa-whatsapp"></i> Share Quote on WhatsApp
+    </button>
+  </div>
+</div>
+
+<!-- Rates Modal -->
+<div class="modal" id="adminModal">
+  <div class="modal-content">
+    <h3 style="color:var(--primary); margin-top:0;">Edit Per Sq.Ft Rates</h3>
+    <div id="adminForm"></div>
+    <button class="btn-calc" onclick="saveRates()" style="margin-top:15px;">Save Changes</button>
+    <button class="rates-btn" style="width:100%; margin-top:8px; justify-content:center;" onclick="closeAdmin()">Cancel</button>
+  </div>
+</div>
+
+<script>
+  let defaultRates = {
+    materials: { 'Commercial Ply': 110, 'Marine Ply': 140, 'MDF Board': 80 },
+    finishes: { 'Matte Lam': 35, 'High Gloss': 60, 'Acrylic': 120 },
+    hardwares: { 'Basic': 2000, 'Soft-Close': 4500, 'Premium': 7500 }
+  };
+
+  let rates = JSON.parse(localStorage.getItem('cupboard_rates_v2')) || defaultRates;
+
+  let selectedMat = Object.keys(rates.materials)[0];
+  let selectedFin = Object.keys(rates.finishes)[0];
+  let selectedHard = Object.keys(rates.hardwares)[0];
+
+  let lastEstimate = null;
+
+  function renderGrids() {
+    renderCardGrid('materialGrid', rates.materials, selectedMat, (val) => { selectedMat = val; renderGrids(); });
+    renderCardGrid('finishGrid', rates.finishes, selectedFin, (val) => { selectedFin = val; renderGrids(); });
+    renderCardGrid('hardwareGrid', rates.hardwares, selectedHard, (val) => { selectedHard = val; renderGrids(); }, ' fixed');
+  }
+
+  function renderCardGrid(elementId, dataset, selectedValue, onSelectCallback, suffix = '/ft') {
+    let container = document.getElementById(elementId);
+    container.innerHTML = '';
+    
+    for (let key in dataset) {
+      let isSelected = key === selectedValue;
+      let card = document.createElement('div');
+      card.className = `opt-card ${isSelected ? 'active' : ''}`;
+      card.innerHTML = `
+        <span class="opt-title">${key}</span>
+        <span class="opt-price">₹${dataset[key]}${suffix}</span>
+      `;
+      card.onclick = () => onSelectCallback(key);
+      container.appendChild(card);
+    }
+  }
+
+  function calculate() {
+    let h = parseFloat(document.getElementById('height').value) || 0;
+    let w = parseFloat(document.getElementById('width').value) || 0;
+
+    if (h <= 0 || w <= 0) {
+      alert("Kripya Height aur Width enter karein!");
+      return;
+    }
+
+    let sqft = h * w;
+    let matRate = rates.materials[selectedMat] || 0;
+    let finRate = rates.finishes[selectedFin] || 0;
+    let hardCost = rates.hardwares[selectedHard] || 0;
+
+    let boardTotal = sqft * matRate;
+    let finishTotal = sqft * finRate;
+    let total = boardTotal + finishTotal + hardCost;
+
+    document.getElementById('sqftText').innerText = `${sqft.toFixed(2)} Sq. Ft.`;
+    document.getElementById('boardCostText').innerText = `₹${Math.round(boardTotal)}`;
+    document.getElementById('finishCostText').innerText = `₹${Math.round(finishTotal)}`;
+    document.getElementById('hardwareCostText').innerText = `₹${Math.round(hardCost)}`;
+    document.getElementById('totalText').innerText = `₹${Math.round(total)}`;
+    
+    document.getElementById('resultCard').style.display = 'block';
+
+    lastEstimate = { h, w, sqft, matName: selectedMat, finName: selectedFin, hardName: selectedHard, total };
+  }
+
+  function shareWhatsApp() {
+    if (!lastEstimate) return;
+    let text = `*Cupboard Quotation*%0A` +
+      `----------------------------%0A` +
+      `📏 *Size:* ${lastEstimate.h}ft x ${lastEstimate.w}ft (${lastEstimate.sqft.toFixed(2)} Sq.Ft)%0A` +
+      `🪵 *Material:* ${lastEstimate.matName}%0A` +
+      `✨ *Finish:* ${lastEstimate.finName}%0A` +
+      `🔧 *Hardware:* ${lastEstimate.hardName}%0A` +
+      `----------------------------%0A` +
+      `💰 *Total Cost:* ₹${Math.round(lastEstimate.total)}%0A%0A` +
+      `_Golden Star Furniture & Interior_`;
+    
+    window.open(`https://wa.me/?text=${text}`, '_blank');
+  }
+
+  function openAdmin() {
+    let html = '<h4 style="margin:10px 0 5px 0; color:var(--accent);">Material Rates (Per Sq.Ft)</h4>';
+    for (let k in rates.materials) {
+      html += `<div class="admin-group"><label>${k}</label><input type="number" id="mat_${k}" value="${rates.materials[k]}"></div>`;
+    }
+    html += '<h4 style="margin:10px 0 5px 0; color:var(--accent);">Finish Rates (Per Sq.Ft)</h4>';
+    for (let k in rates.finishes) {
+      html += `<div class="admin-group"><label>${k}</label><input type="number" id="fin_${k}" value="${rates.finishes[k]}"></div>`;
+    }
+    html += '<h4 style="margin:10px 0 5px 0; color:var(--accent);">Hardware Fixed Cost</h4>';
+    for (let k in rates.hardwares) {
+      html += `<div class="admin-group"><label>${k}</label><input type="number" id="hard_${k}" value="${rates.hardwares[k]}"></div>`;
+    }
+    document.getElementById('adminForm').innerHTML = html;.
+    document.getElementById('adminModal').style.display = 'flex';
+  }
+
+  function closeAdmin() {
+    document.getElementById('adminModal').style.display = 'none';
+  }
+
+  function saveRates() {
+    for (let k in rates.materials) {
+      rates.materials[k] = parseFloat(document.getElementById(`mat_${k}`).value) || 0;
+    }
+    for (let k in rates.finishes) {
+      rates.finishes[k] = parseFloat(document.getElementById(`fin_${k}`).value) || 0;
+    }
+    for (let k in rates.hardwares) {
+      rates.hardwares[k] = parseFloat(document.getElementById(`hard_${k}`).value) || 0;
+    }
+    localStorage.setItem('cupboard_rates_v2', JSON.stringify(rates));
+    renderGrids();
+    closeAdmin();
+  }
+
+  renderGrids();
+</script>
+
+</body>
+</html>
