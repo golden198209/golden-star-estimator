@@ -13,7 +13,6 @@
             --text-main: #2C221E;
             --text-muted: #7A6B63;
             --border-color: #E6DCB8;
-            --accent: #D4A373;
         }
 
         * {
@@ -54,17 +53,6 @@
             letter-spacing: 1px;
         }
 
-        .rates-btn {
-            background: var(--card-bg);
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
         .section-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -79,9 +67,6 @@
             font-weight: 700;
             color: var(--primary-dark);
             margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .dimension-grid {
@@ -190,7 +175,6 @@
             <h1>Golden Star Cupboard</h1>
             <p>Quick Estimator</p>
         </div>
-        <button class="rates-btn" onclick="alert('Standard Rates Active')">⚙ Rates</button>
     </div>
 
     <!-- 1. Size Dimensions -->
@@ -211,7 +195,7 @@
     <!-- 2. Base Material -->
     <div class="section-card">
         <div class="section-title">🪵 2. Base Material</div>
-        <div class="options-grid" id="material-options">
+        <div class="options-grid">
             <div class="option-card selected" onclick="selectOption(this, 'material', 150)">
                 <div class="name">Commercial Ply</div>
                 <div class="price">₹150 / sq.ft</div>
@@ -230,7 +214,7 @@
     <!-- 3. Outer Finish -->
     <div class="section-card">
         <div class="section-title">🎨 3. Outer Finish</div>
-        <div class="options-grid" id="finish-options">
+        <div class="options-grid">
             <div class="option-card selected" onclick="selectOption(this, 'finish', 80)">
                 <div class="name">Laminate</div>
                 <div class="price">₹80 / sq.ft</div>
@@ -249,7 +233,7 @@
     <!-- 4. Hardware Quality -->
     <div class="section-card">
         <div class="section-title">🔩 4. Hardware Quality</div>
-        <div class="options-grid" id="hardware-options">
+        <div class="options-grid">
             <div class="option-card selected" onclick="selectOption(this, 'hardware', 40)">
                 <div class="name">Standard</div>
                 <div class="price">₹40 / sq.ft</div>
@@ -276,12 +260,10 @@
         };
 
         function selectOption(element, category, price) {
-            // Remove selected from siblings
             const parent = element.parentElement;
             parent.querySelectorAll('.option-card').forEach(card => {
                 card.classList.remove('selected');
             });
-            // Add to clicked
             element.classList.add('selected');
             selectedValues[category] = price;
         }
