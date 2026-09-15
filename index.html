@@ -202,7 +202,7 @@
     </select>
   </div>
 
-  <!-- KITCHEN EXCLUSIVE ACCESSORIES (Hidden by default, shown only for Kitchen) -->
+  <!-- KITCHEN EXCLUSIVE ACCESSORIES -->
   <div class="kitchen-section" id="kitchenAccessoriesSection">
     <div style="font-size:11px; font-weight:800; color:var(--accent); margin-bottom:8px; text-transform:uppercase;">
       <i class="fa-solid fa-kitchen-set"></i> Modular Kitchen Baskets & Appliances
@@ -255,8 +255,8 @@
     </div>
   </div>
 
-  <!-- 2. Doors & Internal Setup -->
-  <div class="section-header"><i class="fa-solid id-card"></i> 2. Doors (Shutters) & Shelves</div>
+  <!-- 2. Customer Choices for Doors, Partitions & Shelves -->
+  <div class="section-header"><i class="fa-solid fa-door-open"></i> 2. Doors, Partitions & Shelves Setup</div>
   <div class="dim-row">
     <div class="input-box">
       <label>NUMBER OF DOORS (SHUTTERS)</label>
@@ -265,6 +265,8 @@
         <option value="2" selected>2 Doors</option>
         <option value="3">3 Doors</option>
         <option value="4">4 Doors</option>
+        <option value="5">5 Doors</option>
+        <option value="6">6 Doors</option>
       </select>
     </div>
     <div class="input-box">
@@ -273,6 +275,7 @@
         <option value="0">0 Partition (Open Box)</option>
         <option value="1" selected>1 Vertical Partition</option>
         <option value="2">2 Vertical Partitions</option>
+        <option value="3">3 Vertical Partitions</option>
       </select>
     </div>
   </div>
@@ -281,6 +284,8 @@
     <div class="input-box">
       <label>NUMBER OF SHELVES</label>
       <select id="shelves">
+        <option value="0">0 Shelves</option>
+        <option value="1">1 Shelf</option>
         <option value="2">2 Shelves</option>
         <option value="3" selected>3 Shelves</option>
         <option value="4">4 Shelves</option>
@@ -334,11 +339,11 @@
     </div>
     <div class="input-box">
       <label>LOCKS NEEDED (PCS)</label>
-      <input type="number" id="lockCount" value="3" min="0">
+      <input type="number" id="lockCount" value="2" min="0">
     </div>
     <div class="input-box">
       <label>DRAWERS NEEDED</label>
-      <input type="number" id="drawerCount" value="3" min="0">
+      <input type="number" id="drawerCount" value="2" min="0">
     </div>
   </div>
 
@@ -480,7 +485,7 @@
     backing: { '6mm Commercial Back Ply': 30, '6mm Marine Back Ply': 45, '8mm HDMR Backing': 50 },
     
     labourRate: 300,        
-    hingeRate: 150,           // Updated default to 150 per hinge
+    hingeRate: 150,           // 150 per hinge cost
     lockRate: 300,          
     fevicolRate: 600,       
     heatxRate: 600,
@@ -496,7 +501,7 @@
     adminPin: '1234'
   };
 
-  let backend = JSON.parse(localStorage.getItem('cupboard_v18_backend')) || defaultBackend;
+  let backend = JSON.parse(localStorage.getItem('cupboard_v19_backend')) || defaultBackend;
   backend.labourRate = 300;
 
   let lastEstimate = null;
@@ -556,7 +561,7 @@
 
   function updateHingesCount() {
     let doors = parseInt(document.getElementById('doorCount').value) || 2;
-    // 3 hinges per door automatically
+    // Automatic 3 hinges per door calculation
     let totalHinges = doors * 3;
     document.getElementById('hingeCount').value = totalHinges;
   }
@@ -572,7 +577,7 @@
     let numDoors = parseInt(document.getElementById('doorCount').value) || 2;
     let numPartitions = parseInt(document.getElementById('partitions').value) || 0;
     let numShelves = parseInt(document.getElementById('shelves').value) || 0;
-    let numHinges = numDoors * 3; // 3 hinges per door
+    let numHinges = numDoors * 3; // 3 hinges per door automatically
     let numLocks = parseInt(document.getElementById('lockCount').value) || 0;
     let drawers = parseInt(document.getElementById('drawerCount').value) || 0;
 
@@ -836,7 +841,7 @@
       backend.adminPin = newPin;
     }
 
-    localStorage.setItem('cupboard_v18_backend', JSON.stringify(backend));
+    localStorage.setItem('cupboard_v19_backend', JSON.stringify(backend));
     populateDropdowns();
     closeAdmin();
     alert("Sabhi rates successfully update ho gaye hain!");
