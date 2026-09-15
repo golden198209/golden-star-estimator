@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Cabinet & Cut-List Designer</title>
+    <title>Professional Cabinet & Cut-List Studio</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -176,7 +176,7 @@
     <div style="max-width: 1200px; margin: 20px auto;">
         <div class="card">
             <h2>3. Optimized Cut-List (Panel Breakdown)</h2>
-            <p style="color: var(--text-muted); font-size: 0.85rem;">Mistri aur Karigar ke liye exact panel cutting size list (18mm Plywood standard calculation):</p>
+            <p style="color: var(--text-muted); font-size: 0.85rem;">Mistri aur Karigar ke liye exact panel cutting size list (Standard Plywood calculation):</p>
             <div style="overflow-x: auto;">
                 <table class="cutlist-table" id="cutListTable">
                     <thead>
@@ -211,7 +211,6 @@
             let cabinetFrame = document.createElement('div');
             cabinetFrame.className = 'cabinet-frame';
             
-            // Proportional scaling for preview box (Max height limit 280px)
             let scale = 260 / Math.max(H, 500);
             cabinetFrame.style.width = (W * scale) + 'px';
             cabinetFrame.style.height = (H * scale) + 'px';
@@ -234,7 +233,6 @@
             let body = document.getElementById('cutListBody');
             body.innerHTML = '';
 
-            // Formulas for standard modular cabinet carcase
             let sidesL = H;
             let sidesW = D;
 
@@ -242,16 +240,15 @@
             let topBottomW = D;
 
             let backL = H - (2 * T);
-            let backW = W - (2 * T); // assuming groove or inside fit (approx)
+            let backW = W - (2 * T);
 
-            let doorGap = 4; // total clearance gap
             let doorL = H - 6;
-            let doorW = (W - ((doorsCount - 1) * doorGap)) / doorsCount;
+            let doorW = (W - ((doorsCount - 1) * 4)) / doorsCount;
 
             let panels = [
                 { name: 'Cabinet Left / Right Sides', qty: 2, l: sidesL, w: sidesW, edge: '2 Long Sides' },
                 { name: 'Top & Bottom Panels', qty: 2, l: topBottomL, w: topBottomW, edge: '1 Front Side' },
-                { name: 'Back Panel (Grooved/Screw)', qty: 1, l: backL, w: backW, edge: 'None' },
+                { name: 'Back Panel', qty: 1, l: backL, w: backW, edge: 'None' },
                 { name: 'Doors / Shutters', qty: doorsCount, l: doorL, w: Math.round(doorW), edge: 'All 4 Sides' }
             ];
 
@@ -268,7 +265,6 @@
             });
         }
 
-        // Run on initial load
         window.onload = updateDesign;
     </script>
 </body>
