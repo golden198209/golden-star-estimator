@@ -3,1003 +3,170 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Golden Star Furniture - Estimator & Catalog</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <title>Design Catalog & Project Type</title>
+  <!-- FontAwesome Icons for Zoom Icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    :root {
-      --primary: #2c1810;
-      --accent: #b87333;
-      --accent-light: #f5ebe0;
-      --bg: #1a0f0a;
-      --card-bg: #ffffff;
-      --text-main: #2b1a10;
-      --text-muted: #7a685d;
-      --border: #e6ded6;
-    }
-
-    * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
-
     body {
-      background: linear-gradient(135deg, #2c1810 0%, #0f0805 100%);
-      color: var(--text-main);
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
       margin: 0;
-      padding: 15px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    h2 {
+      color: #8B4513;
+      text-transform: uppercase;
+      font-size: 18px;
+      margin-bottom: 10px;
     }
 
-    .app-container {
-      width: 100%;
-      max-width: 480px;
-      background: var(--card-bg);
-      border-radius: 24px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-      padding: 22px;
-      position: relative;
-    }
-
-    .header {
+    .catalog-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 12px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .brand { display: flex; align-items: flex-start; gap: 10px; }
-    .brand i {
-      font-size: 20px; color: var(--accent);
-      background: var(--accent-light); padding: 10px; border-radius: 12px;
-      margin-top: 2px;
-    }
-    .brand-title h2 { margin: 0; font-size: 18px; color: var(--primary); font-weight: 800; }
-    .brand-title p { margin: 2px 0 0 0; font-size: 11px; color: var(--text-muted); font-weight: 600; line-height: 1.3; }
-
-    .rates-btn {
-      background: var(--accent-light); color: var(--primary);
-      border: 1px solid #e0cdbc; padding: 8px 12px; border-radius: 20px;
-      font-size: 11px; font-weight: 700; cursor: pointer;
-      display: flex; align-items: center; gap: 6px; white-space: nowrap;
-    }
-
-    .section-header {
-      font-size: 11px; font-weight: 800; letter-spacing: 0.8px;
-      color: var(--accent); text-transform: uppercase;
-      margin: 14px 0 6px 0; display: flex; align-items: center; justify-content: space-between;
-    }
-
-    /* DESIGN GALLERY CARDS */
-    .gallery-container {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      padding-bottom: 6px;
+      align-items: center;
       margin-bottom: 10px;
-      scrollbar-width: thin;
-      scrollbar-color: var(--accent) var(--border);
     }
-    .gallery-container::-webkit-scrollbar { height: 4px; }
-    .gallery-container::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
 
-    .gallery-card {
-      min-width: 105px;
-      max-width: 105px;
-      background: #fdfbf7;
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 6px;
-      transition: all 0.2s;
-      text-align: center;
-      flex-shrink: 0;
-      position: relative;
+    .catalog-header span {
+      font-size: 13px;
+      color: #666;
+      font-weight: bold;
     }
-    .gallery-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-    
-    .img-box {
-      width: 100%;
-      height: 70px;
+
+    /* Horizontal Scroll Catalog Container */
+    .catalog-container {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      padding-bottom: 15px;
+      scroll-behavior: smooth;
+    }
+
+    .catalog-container::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .catalog-container::-webkit-scrollbar-thumb {
+      background: #b5651d;
+      border-radius: 4px;
+    }
+
+    /* Gallery Card Styling */
+    .gallery-card {
+      min-width: 180px;
+      width: 180px;
+      background: #fff;
+      border: 1px solid #ddd;
       border-radius: 8px;
       overflow: hidden;
-      cursor: pointer;
-      position: relative;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
     }
-    .gallery-card img {
+
+    .img-box {
+      position: relative;
+      width: 100%;
+      height: 120px;
+      cursor: pointer;
+      background: #eee;
+    }
+
+    .img-box img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
+
     .zoom-hint {
-      position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6);
-      color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px;
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: 4px 6px;
+      border-radius: 4px;
+      font-size: 12px;
     }
 
-    .gallery-card .title {
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--accent);
-      margin-top: 5px;
+    .title {
+      padding: 10px;
+      font-size: 13px;
+      font-weight: bold;
+      color: #b5651d;
+      text-align: center;
       cursor: pointer;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      background: #fff;
+      border-top: 1px solid #eee;
+    }
+
+    .title:hover {
+      background: #f9f9f9;
       text-decoration: underline;
-    }
-    .gallery-card .title:hover { color: var(--primary); }
-
-    .dim-row { display: flex; gap: 10px; margin-bottom: 10px; }
-    
-    .input-box {
-      flex: 1; background: #fdfbf7; border: 1.5px solid var(--border);
-      border-radius: 12px; padding: 8px 12px; transition: all 0.2s;
-    }
-    .input-box label { display: block; font-size: 10px; font-weight: 700; color: var(--text-muted); margin-bottom: 2px; }
-    .input-box input, .input-box select {
-      width: 100%; border: none; outline: none; background: transparent;
-      font-size: 13px; font-weight: 700; color: var(--primary);
-    }
-
-    .select-box {
-      width: 100%; background: #fdfbf7; border: 1.5px solid var(--border);
-      border-radius: 12px; padding: 10px 12px; margin-bottom: 10px;
-    }
-    .select-box label { display: block; font-size: 10px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; }
-    .select-box select {
-      width: 100%; border: none; outline: none; background: transparent;
-      font-size: 13px; font-weight: 700; color: var(--primary);
-    }
-
-    .kitchen-section {
-      display: none; background: #fcf8f2; border: 1px dashed var(--accent);
-      padding: 10px; border-radius: 14px; margin-bottom: 10px;
-    }
-
-    .btn-calc {
-      width: 100%; background: linear-gradient(135deg, #b87333 0%, #2c1810 100%);
-      color: #fff; border: none; padding: 14px; border-radius: 14px;
-      font-size: 15px; font-weight: 800; cursor: pointer; margin-top: 15px;
-      box-shadow: 0 6px 18px rgba(184, 115, 51, 0.3);
-      display: flex; justify-content: center; align-items: center; gap: 8px;
-    }
-
-    .result-card {
-      margin-top: 18px; background: #2c1810; color: #fff;
-      border-radius: 16px; padding: 16px; display: none;
-    }
-
-    .res-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; color: #d1c2b5; }
-    .res-row.highlight { color: #f5ebe0; font-weight: 700; background: rgba(255,255,255,0.05); padding: 4px 6px; border-radius: 6px; }
-    .hw-subrow { font-size: 11px; color: #a89485; padding-left: 10px; margin-bottom: 3px; display: flex; justify-content: space-between; }
-    
-    .sheet-badge { 
-      background: #3d2319; 
-      border: 1px solid #5c4132; 
-      padding: 10px; 
-      border-radius: 10px; 
-      margin: 10px 0; 
-    }
-
-    .res-total {
-      border-top: 1px dashed #5c4132; margin-top: 10px; padding-top: 10px;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .res-total h3 { margin: 0; font-size: 20px; color: var(--accent); font-weight: 800; }
-
-    .action-btns { display: flex; gap: 8px; margin-top: 12px; }
-    .whatsapp-btn {
-      flex: 1; background: #25D366; color: #fff; border: none;
-      padding: 11px; border-radius: 10px; font-size: 12px; font-weight: 700;
-      cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px;
-    }
-    .pdf-btn {
-      flex: 1; background: #e63946; color: #fff; border: none;
-      padding: 11px; border-radius: 10px; font-size: 12px; font-weight: 700;
-      cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px;
-    }
-
-    /* MODAL STYLES */
-    .modal {
-      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85); justify-content: center; align-items: center;
-      z-index: 100; backdrop-filter: blur(5px); padding: 15px;
-    }
-    .modal-content {
-      background: #fff; padding: 20px; border-radius: 18px;
-      width: 92%; max-width: 440px; max-height: 88vh; overflow-y: auto;
-    }
-    
-    /* FULL IMAGE VIEWER MODAL */
-    .image-modal-content {
-      position: relative; max-width: 90%; max-height: 90vh; text-align: center;
-    }
-    .image-modal-content img {
-      max-width: 100%; max-height: 80vh; border-radius: 12px; border: 2px solid var(--accent);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-    }
-    .image-title {
-      color: #fff; margin-top: 10px; font-size: 16px; font-weight: 700;
-    }
-    .close-img-btn {
-      position: absolute; top: -40px; right: 0; background: #fff; color: #000;
-      border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; font-weight: bold; cursor: pointer;
-    }
-
-    .admin-group { margin-bottom: 10px; }
-    .admin-group label { font-size: 11px; font-weight: 700; color: var(--primary); }
-    .admin-group input, .admin-group select { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 8px; margin-top: 2px; }
-    
-    .mat-edit-row {
-      display: flex; align-items: center; gap: 8px; margin-bottom: 6px; background: #fdfbf7; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--border);
-    }
-    .mat-edit-row span { flex: 1; font-size: 11px; font-weight: 700; color: var(--primary); }
-    .mat-edit-row input { width: 70px; padding: 4px 6px; border: 1px solid var(--border); border-radius: 6px; font-size: 12px; font-weight: 700; text-align: right; }
-    .del-btn { color: #d9534f; cursor: pointer; font-size: 13px; padding: 4px; }
-
-    @media print {
-      body { background: #fff; color: #000; padding: 0; }
-      .app-container { box-shadow: none; max-width: 100%; padding: 0; }
-      .header, .section-header, .dim-row, .select-box, .kitchen-section, .btn-calc, .action-btns, .rates-btn, .gallery-container, .modal { display: none !important; }
-      .result-card { display: block !important; background: #fff !important; color: #000 !important; border: 1px solid #000; padding: 10px; margin: 0; }
-      .res-row { color: #000 !important; }
-      .res-row.highlight { background: #f0f0f0 !important; color: #000 !important; }
-      .sheet-badge { background: #f9f9f9 !important; border: 1px solid #000 !important; color: #000 !important; }
-      .sheet-badge strong { color: #000 !important; }
-      .hw-subrow { color: #333 !important; }
-      .res-total h3 { color: #000 !important; }
     }
   </style>
 </head>
 <body>
 
-<div class="app-container">
-  <div class="header">
-    <div class="brand">
-      <i class="fa-solid fa-couch"></i>
-      <div class="brand-title">
-        <h2>Golden Star Furniture</h2>
-        <p>📍 Xchange Road Lalchowk, Near Aadhar Center<br>📞 7006688390</p>
-      </div>
-    </div>
-    <button class="rates-btn" onclick="openAdminWithPin()">
-      <i class="fa-solid fa-lock"></i> Admin
-    </button>
+  <div class="catalog-header">
+    <h2>Select Design Catalog</h2>
+    <span>(Click photo to view full size)</span>
   </div>
 
-  <!-- VISUAL DESIGN GALLERY / CATALOG -->
-  <div class="section-header">
-    <span><i class="fa-solid fa-images"></i> Select Design Catalog</span>
-    <span style="font-size:9px; color:var(--text-muted); font-weight:600;">(Click Photo to View Full Size)</span>
-  </div>
-  <div class="gallery-container">
+  <!-- Horizontal Design Catalog -->
+  <div class="catalog-container">
+    
+    <!-- Card 1: Custom Design -->
     <div class="gallery-card">
-      <div class="img-box" onclick="openFullImage('data:image/jpeg;base64,...', 'Aapka Design (Custom Wardrobe)')">
+      <div class="img-box" onclick="openFullImage('https://i.ibb.co/6y4g8h3/cub.jpg', 'My Custom Design')">
         <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
-        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=" alt="Aapka Design">
+        <img src="https://i.ibb.co/6y4g8h3/cub.jpg" alt="Custom Design">
       </div>
-      <div class="title" onclick="applyPreset('wardrobe', 7.5, 9.0, 1.5, 6, 6, 2, 4, 'Aapka Special Grey Wardrobe');">Aapka Design (Select)</div>
+      <div class="title" onclick="applyPreset('custom', 7.5, 9.0, 1.5, 6, 6, 2, 4, 'My Custom Design');">My Design (Select)</div>
     </div>
+
+    <!-- Card 2: Standard Design -->
     <div class="gallery-card">
-      <div class="img-box" onclick="openFullImage('https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=800&auto=format&fit=crop&q=80', 'Standard Wardrobe')">
+      <div class="img-box" onclick="openFullImage('https://images.unsplash.com/photo-1595515106969-1ce29566ff1c', 'Standard Design')">
         <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
-        <img src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=300&auto=format&fit=crop&q=80" alt="Wardrobe">
+        <img src="https://images.unsplash.com/photo-1595515106969-1ce29566ff1c" alt="Standard Design">
       </div>
-      <div class="title" onclick="applyPreset('wardrobe', 6, 4, 1.5, 2, 2, 1, 3, 'Standard Wardrobe');">Standard (Select)</div>
+      <div class="title" onclick="applyPreset('standard', 6.0, 8.0, 1.2, 5, 5, 2, 3, 'Standard Design');">Standard (Select)</div>
     </div>
+
+    <!-- Card 3: Kitchen Design -->
     <div class="gallery-card">
-      <div class="img-box" onclick="openFullImage('https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=800&auto=format&fit=crop&q=80', 'Modular Kitchen')">
+      <div class="img-box" onclick="openFullImage('https://images.unsplash.com/photo-1556911220-e15b29be8c8f', 'Kitchen Unit')">
         <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
-        <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=300&auto=format&fit=crop&q=80" alt="Kitchen">
+        <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f" alt="Kitchen Design">
       </div>
-      <div class="title" onclick="applyPreset('kitchen', 2.8, 8, 2.0, 2, 0, 1, 1, 'Modular Kitchen Unit');">Kitchen (Select)</div>
+      <div class="title" onclick="applyPreset('kitchen', 10.0, 12.0, 2.0, 8, 8, 4, 6, 'Kitchen Unit');">Kitchen (Select)</div>
     </div>
+
+    <!-- Card 4: TV Unit Design -->
     <div class="gallery-card">
-      <div class="img-box" onclick="openFullImage('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&auto=format&fit=crop&q=80', 'TV Entertainment Unit')">
+      <div class="img-box" onclick="openFullImage('https://images.unsplash.com/photo-1600585154340-be6161a56a0c', 'TV Unit')">
         <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
-        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=300&auto=format&fit=crop&q=80" alt="TV Unit">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" alt="TV Unit">
       </div>
-      <div class="title" onclick="applyPreset('tvunit', 4, 6, 1.0, 2, 0, 2, 3, 'TV Entertainment Unit');">TV Unit (Select)</div>
+      <div class="title" onclick="applyPreset('tvunit', 8.0, 7.0, 1.0, 4, 4, 2, 2, 'TV Unit');">TV Unit (Select)</div>
     </div>
+
   </div>
 
-  <!-- Cabinet / Design Type Selection -->
-  <div class="section-header"><span><i class="fa-solid fa-id-card"></i> Project Type</span></div>
-  <div class="select-box">
-    <label>CABINET / DESIGN TYPE</label>
-    <select id="cabinetType" onchange="toggleKitchenOptions(); adjustDefaultsForType();">
-      <option value="wardrobe">Standard Wardrobe (Full Height Cupboard)</option>
-      <option value="kitchen">Modular Kitchen Base Unit</option>
-      <option value="tvunit">TV Unit / Crockery Display Unit</option>
-    </select>
-  </div>
-
-  <!-- KITCHEN EXCLUSIVE ACCESSORIES -->
-  <div class="kitchen-section" id="kitchenAccessoriesSection">
-    <div style="font-size:11px; font-weight:800; color:var(--accent); margin-bottom:8px; text-transform:uppercase;">
-      <i class="fa-solid fa-kitchen-set"></i> Modular Kitchen Baskets & Appliances
-    </div>
-    <div class="dim-row">
-      <div class="input-box">
-        <label>SS WIRE BASKETS (PCS)</label>
-        <input type="number" id="kitchenBaskets" value="3" min="0">
-      </div>
-      <div class="input-box">
-        <label>BOTTLE PULL-OUT</label>
-        <select id="bottlePullout">
-          <option value="0">None</option>
-          <option value="1" selected>1 Unit (Spice/Bottle)</option>
-        </select>
-      </div>
-    </div>
-    <div class="dim-row">
-      <div class="input-box">
-        <label>CHIMNEY INCLUDED?</label>
-        <select id="hasChimney">
-          <option value="0">No Chimney</option>
-          <option value="1" selected>Yes (Standard Wall Hood)</option>
-        </select>
-      </div>
-      <div class="input-box">
-        <label>BUILT-IN HOB?</label>
-        <select id="hasHob">
-          <option value="0">No Hob</option>
-          <option value="1">Yes (Built-in Glass Hob)</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-  <!-- 1. Dimensions -->
-  <div class="section-header"><span><i class="fa-solid fa-ruler-combined"></i> 1. Outer Dimensions</span></div>
-  <div class="dim-row">
-    <div class="input-box">
-      <label>HEIGHT (FT)</label>
-      <input type="number" id="height" value="7.5" step="0.1">
-    </div>
-    <div class="input-box">
-      <label>WIDTH (FT)</label>
-      <input type="number" id="width" value="9" step="0.1">
-    </div>
-    <div class="input-box">
-      <label>DEPTH (FT)</label>
-      <input type="number" id="depth" value="1.5" step="0.1">
-    </div>
-  </div>
-
-  <!-- 2. Doors, Loft Shutters, Partitions & Shelves -->
-  <div class="section-header"><span><i class="fa-solid fa-door-open"></i> 2. Doors, Loft Shutters & Partitions</span></div>
-  <div class="dim-row">
-    <div class="input-box">
-      <label>MAIN WARDROBE DOORS</label>
-      <input type="number" id="doorCount" value="6" min="0" oninput="updateHingesCount()">
-    </div>
-    <div class="input-box">
-      <label>TOP LOFT / SMALL DOORS</label>
-      <input type="number" id="loftDoorCount" value="6" min="0" oninput="updateHingesCount()">
-    </div>
-  </div>
-
-  <div class="dim-row">
-    <div class="input-box">
-      <label>CENTER PARTITIONS</label>
-      <input type="number" id="partitions" value="2" min="0">
-    </div>
-    <div class="input-box">
-      <label>NUMBER OF SHELVES</label>
-      <input type="number" id="shelves" value="4" min="0">
-    </div>
-  </div>
-
-  <!-- 3. Material, Mica & Liner Selection -->
-  <div class="section-header"><span><i class="fa-solid fa-layer-group"></i> 3. Materials, Outer & Liner Mica</span></div>
-  <div class="select-box">
-    <label>INNER STRUCTURE / CARCASS (18mm)</label>
-    <select id="carcassSelect"></select>
-  </div>
-  <div class="select-box">
-    <label>DOORS / SHUTTERS BOARD</label>
-    <select id="doorSelect"></select>
-  </div>
-  <div class="select-box">
-    <label>OUTER MICA FINISH</label>
-    <select id="micaSelect"></select>
-  </div>
-  <div class="select-box">
-    <label>LINER MICA (INNER WALLS & SHELVES)</label>
-    <select id="linerMicaSelect"></select>
-  </div>
-  <div class="select-box">
-    <label>BACKING SHEET (6mm/8mm)</label>
-    <select id="backSelect"></select>
-  </div>
-
-  <!-- 4. Exact Hardware & Adhesives -->
-  <div class="section-header"><span><i class="fa-solid fa-screwdriver-wrench"></i> 4. Hardware & Adhesives Details</span></div>
-  
-  <div class="dim-row">
-    <div class="input-box">
-      <label>FEVICOL (KG)</label>
-      <input type="number" id="fevicolKgInput" value="3" min="0" step="0.5">
-    </div>
-    <div class="input-box">
-      <label>HEATX (KG)</label>
-      <input type="number" id="heatxKgInput" value="1" min="0" step="0.5">
-    </div>
-  </div>
-
-  <div class="dim-row">
-    <div class="input-box">
-      <label>TOTAL HINGES (AUTO 3 PER DOOR)</label>
-      <input type="number" id="hingeCount" value="36" readonly style="color:var(--accent);">
-    </div>
-    <div class="input-box">
-      <label>LOCKS NEEDED (PCS)</label>
-      <input type="number" id="lockCount" value="2" min="0">
-    </div>
-    <div class="input-box">
-      <label>DRAWERS NEEDED</label>
-      <input type="number" id="drawerCount" value="3" min="0">
-    </div>
-  </div>
-
-  <button class="btn-calc" onclick="calculate()">
-    <i class="fa-solid fa-calculator"></i> Calculate Exact Estimate
-  </button>
-
-  <!-- RESULT CARD -->
-  <div class="result-card" id="resultCard">
-    <div style="text-align:center; margin-bottom:10px; border-bottom:1px solid #5c4132; padding-bottom:6px;">
-      <h3 style="margin:0; font-size:16px; color:var(--accent);">GOLDEN STAR FURNITURE</h3>
-      <p style="margin:2px 0 0 0; font-size:10px; color:#d1c2b5;" id="designTitleText">Official Project Quotation Summary</p>
-    </div>
-    <div class="res-row"><span>Project Type:</span><strong id="projTypeText">Standard Wardrobe</strong></div>
-    <div class="res-row"><span>Front Size:</span><strong id="sqftText">0 Sq. Ft.</strong></div>
-    <div class="res-row"><span>Shutters Breakdown:</span><strong id="doorsInfoText">Main & Loft Doors</strong></div>
-    <div class="res-row highlight"><span>1 Single Shelf Size:</span><strong id="singleShelfText">0 Ft x 0 Ft</strong></div>
-    <div class="res-row highlight"><span>Total Shelves Area:</span><strong id="totalShelvesAreaText">0 Sq. Ft.</strong></div>
-    <div class="res-row highlight"><span>Total Carcass Area:</span><strong id="carcassSqftText">0 Sq. Ft.</strong></div>
-
-    <!-- WORKSHOP SHEET REQUIREMENT (8x4 Feet Sheets) -->
-    <div class="sheet-badge">
-      <div style="font-size:10px; font-weight:800; color:var(--accent); margin-bottom:4px; text-transform:uppercase;"><i class="fa-solid fa-warehouse"></i> Workshop Sheet Count (8x4 ft)</div>
-      <div class="res-row"><span>• Plywood Sheets (Carcass):</span><strong id="plywoodSheetsText" style="color:#fff;">0 Sheets</strong></div>
-      <div class="res-row"><span>• Doors / Shutters Board:</span><strong id="doorSheetsText" style="color:#fff;">0 Sheets</strong></div>
-      <div class="res-row"><span>• Outer Mica Sheets:</span><strong id="micaSheetsText" style="color:#fff;">0 Sheets</strong></div>
-      <div class="res-row"><span>• Inner Liner Mica Sheets:</span><strong id="linerSheetsText" style="color:#fff;">0 Sheets</strong></div>
-      <div class="res-row"><span>• Backing Sheet (6mm):</span><strong id="backSheetsText" style="color:#fff;">0 Sheets</strong></div>
-    </div>
-
-    <div style="border-top:1px solid #4a3427; margin:10px 0; padding-top:6px;"></div>
-    
-    <div class="res-row"><span>Inner Structure Board Cost:</span><span id="carcassCostText">₹0</span></div>
-    <div class="res-row"><span>Shutters Board Cost (<span id="doorRateInfoText">₹0</span>/sqft):</span><span id="doorCostText">₹0</span></div>
-    <div class="res-row"><span>Outer Mica Cost:</span><span id="micaCostText">₹0</span></div>
-    <div class="res-row"><span>Liner Mica (Inner) Cost:</span><span id="linerMicaCostText">₹0</span></div>
-    <div class="res-row"><span>Back Ply Cost:</span><span id="backCostText">₹0</span></div>
-    <div class="res-row" style="color:#f5ebe0; font-weight:700;"><span>Labour Charges (@ ₹<span id="labourRateText">300</span>/Sq.Ft):</span><span id="labourCostText">₹0</span></div>
-
-    <!-- Hardware & Kitchen Accessories Breakdown -->
-    <div class="res-row" style="color:var(--accent); font-weight:700; margin-top:8px;"><span>Hardware & Accessories Cost:</span><span id="hwTotalText">₹0</span></div>
-    <div class="hw-subrow"><span>• Hinges/Kabze (<span id="hingeQtyText">0</span> Pcs @ ₹<span id="hingeRateText">150</span>):</span><span id="hingeCostText">₹0</span></div>
-    <div class="hw-subrow"><span>• Locks (<span id="lockQtyText">0</span> Pcs @ ₹<span id="lockRateText">300</span>):</span><span id="lockCostText">₹0</span></div>
-    <div class="hw-subrow"><span>• Fevicol & HeatX Glue:</span><span id="glueCostText">₹0</span></div>
-    <div class="hw-subrow"><span>• Edge Banding & Extra Hardware:</span><span id="extraHwCostText">₹0</span></div>
-    <div class="hw-subrow" id="kitchenAccessoriesRow" style="display:none; color:#f5ebe0;"><span>• Kitchen Baskets/Chimney/Hob:</span><span id="kitchenAccessoriesCostText">₹0</span></div>
-
-    <div class="res-row" style="margin-top:6px;"><span>Extra Drawers Charge:</span><span id="drawerCostText">₹0</span></div>
-
-    <div class="res-total">
-      <span>Estimated Total</span>
-      <h3 id="totalText">₹0</h3>
-    </div>
-
-    <div class="action-btns">
-      <button class="whatsapp-btn" onclick="shareWhatsApp()">
-        <i class="fa-brands fa-whatsapp"></i> WhatsApp
-      </button>
-      <button class="pdf-btn" onclick="downloadPDF()">
-        <i class="fa-solid fa-file-pdf"></i> Download PDF
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- FULL SCREEN IMAGE VIEWER MODAL -->
-<div class="modal" id="imageModal" onclick="closeFullImage()">
-  <div class="image-modal-content" onclick="event.stopPropagation()">
-    <button class="close-img-btn" onclick="closeFullImage()">×</button>
-    <img id="fullScreenImg" src="" alt="Full Design View">
-    <div class="image-title" id="fullScreenTitle">Design Preview</div>
-  </div>
-</div>
-
-<!-- Admin Modal -->
-<div class="modal" id="adminModal">
-  <div class="modal-content">
-    <h3 style="color:var(--primary); margin-top:0;">Admin Panel - Material & Rates</h3>
-    
-    <div style="border-bottom:1px solid #e0cdbc; padding-bottom:12px; margin-bottom:12px;">
-      <h4 style="margin:0 0 8px 0; color:var(--accent);"><i class="fa-solid fa-pen-to-square"></i> Edit Material & Mica Rates (₹ / Sq.Ft)</h4>
-      <div id="materialRatesForm"></div>
-    </div>
-
-    <div style="border-bottom:1px solid #e0cdbc; padding-bottom:12px; margin-bottom:12px;">
-      <h4 style="margin:0 0 8px 0; color:var(--accent);"><i class="fa-solid fa-wrench"></i> Hardware & Kitchen Accessory Rates</h4>
-      <div id="adminForm"></div>
-    </div>
-
-    <div style="border-bottom:1px solid #e0cdbc; padding-bottom:12px; margin-bottom:12px;">
-      <h4 style="margin:0 0 8px 0; color:var(--accent);"><i class="fa-solid fa-plus-circle"></i> Add New Option</h4>
-      <div class="admin-group">
-        <label>Category</label>
-        <select id="newMatCategory">
-          <option value="carcass">Inner Structure (Carcass)</option>
-          <option value="doors">Doors / Shutters Board</option>
-          <option value="mica">Outer Mica Finish</option>
-          <option value="linerMica">Liner Mica (Inner)</option>
-          <option value="backing">Backing Sheet</option>
-        </select>
-      </div>
-      <div class="admin-group">
-        <label>Name / Quality</label>
-        <input type="text" id="newMatName" placeholder="e.g. White Liner Mica">
-      </div>
-      <div class="admin-group">
-        <label>Rate Per Sq. Ft. (₹)</label>
-        <input type="number" id="newMatRate" placeholder="e.g. 45">
-      </div>
-      <button class="rates-btn" style="width:100%; background:#2c1810; color:#fff; justify-content:center; margin-top:5px;" onclick="addNewMaterial()">
-        + Add Option
-      </button>
-    </div>
-
-    <div>
-      <h4 style="margin:0 0 8px 0; color:var(--accent);"><i class="fa-solid fa-key"></i> Change Admin PIN</h4>
-      <div class="admin-group">
-        <label>New PIN Code</label>
-        <input type="password" id="newPinCode" placeholder="Enter new PIN">
-      </div>
-    </div>
-
-    <button class="btn-calc" onclick="saveRates()" style="margin-top:15px;">Save All Changes</button>
-    <button class="rates-btn" style="width:100%; margin-top:8px; justify-content:center;" onclick="closeAdmin()">Cancel</button>
-  </div>
-</div>
-
-<script>
-  let defaultBackend = {
-    carcass: { '18mm Commercial Ply': 110, '18mm HDMR Board': 125, '18mm Marine Ply': 145 },
-    doors: { '19mm Pine Blockboard': 130, '18mm HDMR Door': 120, '18mm Commercial Ply': 110 },
-    mica: { 
-      'Matte Finish (0.8mm)': 60, 
-      'Matte Finish (1.0mm)': 85, 
-      'Glossy Finish (0.8mm)': 75, 
-      'Glossy Finish (1.0mm)': 105, 
-      'Texture Finish (0.8mm)': 80, 
-      'Texture Finish (1.0mm)': 115 
-    },
-    linerMica: {
-      'White Liner Mica (Standard)': 42,
-      'Woodgrain Liner Mica': 50,
-      'Premium Inner Mica': 60
-    },
-    backing: { '6mm Commercial Back Ply': 30, '6mm Marine Back Ply': 45, '8mm HDMR Backing': 50 },
-    
-    labourRate: 300,        
-    hingeRate: 150,           
-    lockRate: 300,          
-    fevicolRate: 600,       
-    heatxRate: 600,
-    edgeBandingRate: 300,  
-    extraHardwareFixed: 1000,
-    extraDrawerRate: 800,
-    
-    basketRate: 1500,       
-    bottlePulloutRate: 3500,
-    chimneyRate: 8500,      
-    hobRate: 11000,         
-
-    adminPin: '1234'
-  };
-
-  let backend = JSON.parse(localStorage.getItem('cupboard_v23_backend')) || defaultBackend;
-  backend.labourRate = 300;
-
-  let lastEstimate = null;
-  let currentDesignTitle = "Aapka Special Grey Wardrobe";
-
-  // Base64 string aapki di gayi photo ki
-  const userUploadedImageBase64 = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=";
-
-  function openFullImage(imgSrc, title) {
-    document.getElementById('fullScreenImg').src = imgSrc;
-    document.getElementById('fullScreenTitle').innerText = title;
-    document.getElementById('imageModal').style.display = 'flex';
-  }
-
-  function closeFullImage() {
-    document.getElementById('imageModal').style.display = 'none';
-  }
-
-  function populateDropdowns() {
-    fillSelect('carcassSelect', backend.carcass, '/sq.ft');
-    fillSelect('doorSelect', backend.doors, '/sq.ft');
-    fillSelect('micaSelect', backend.mica, '/sq.ft');
-    fillSelect('linerMicaSelect', backend.linerMica, '/sq.ft');
-    fillSelect('backSelect', backend.backing, '/sq.ft');
-  }
-
-  function fillSelect(elementId, dataset, suffix) {
-    let select = document.getElementById(elementId);
-    select.innerHTML = '';
-    for (let k in dataset) {
-      select.innerHTML += `<option value="${k}">${k} (₹${dataset[k]}${suffix})</option>`;
-    }
-  }
-
-  function toggleKitchenOptions() {
-    let type = document.getElementById('cabinetType').value;
-    let kitchenSection = document.getElementById('kitchenAccessoriesSection');
-    if (type === 'kitchen') {
-      kitchenSection.style.display = 'block';
-    } else {
-      kitchenSection.style.display = 'none';
-    }
-  }
-
-  function applyPreset(type, h, w, d, doors, loftDoors, partitions, shelves, title) {
-    currentDesignTitle = title;
-    document.getElementById('cabinetType').value = type;
-    toggleKitchenOptions();
-    document.getElementById('height').value = h;
-    document.getElementById('width').value = w;
-    document.getElementById('depth').value = d;
-    document.getElementById('doorCount').value = doors;
-    document.getElementById('loftDoorCount').value = loftDoors;
-    document.getElementById('partitions').value = partitions;
-    document.getElementById('shelves').value = shelves;
-    updateHingesCount();
-    calculate();
-  }
-
-  function adjustDefaultsForType() {
-    let type = document.getElementById('cabinetType').value;
-    if (type === 'kitchen') {
-      currentDesignTitle = "Modular Kitchen Base Unit";
-      document.getElementById('height').value = "2.8";
-      document.getElementById('depth').value = "2.0";
-      document.getElementById('partitions').value = "1";
-      document.getElementById('shelves').value = "1";
-      document.getElementById('doorCount').value = "2";
-      document.getElementById('loftDoorCount').value = "0";
-      document.getElementById('drawerCount').value = "2";
-    } else if (type === 'tvunit') {
-      currentDesignTitle = "TV Display Unit";
-      document.getElementById('height').value = "4.0";
-      document.getElementById('depth').value = "1.0";
-      document.getElementById('partitions').value = "2";
-      document.getElementById('shelves').value = "3";
-      document.getElementById('doorCount').value = "2";
-      document.getElementById('loftDoorCount').value = "0";
-      document.getElementById('drawerCount').value = "1";
-    } else {
-      currentDesignTitle = "Aapka Special Grey Wardrobe";
-      document.getElementById('height').value = "7.5";
-      document.getElementById('width').value = "9.0";
-      document.getElementById('depth').value = "1.5";
-      document.getElementById('partitions').value = "2";
-      document.getElementById('shelves').value = "4";
-      document.getElementById('doorCount').value = "6";
-      document.getElementById('loftDoorCount').value = "6";
-      document.getElementById('drawerCount').value = "3";
-    }
-    updateHingesCount();
-  }
-
-  function updateHingesCount() {
-    let doors = parseInt(document.getElementById('doorCount').value) || 0;
-    let loftDoors = parseInt(document.getElementById('loftDoorCount').value) || 0;
-    let totalHinges = (doors + loftDoors) * 3;
-    document.getElementById('hingeCount').value = totalHinges;
-  }
-
-  function calculate() {
-    let type = document.getElementById('cabinetType').value;
-    let typeNames = { wardrobe: "Standard Wardrobe", kitchen: "Modular Kitchen Base Unit", tvunit: "TV Unit / Crockery Unit" };
-    
-    let h = parseFloat(document.getElementById('height').value) || 0;
-    let w = parseFloat(document.getElementById('width').value) || 0;
-    let d = parseFloat(document.getElementById('depth').value) || 0;
-    
-    let numDoors = parseInt(document.getElementById('doorCount').value) || 0;
-    let numLoftDoors = parseInt(document.getElementById('loftDoorCount').value) || 0;
-    let totalDoors = numDoors + numLoftDoors;
-    let numPartitions = parseInt(document.getElementById('partitions').value) || 0;
-    let numShelves = parseInt(document.getElementById('shelves').value) || 0;
-    let numHinges = totalDoors * 3;
-    let numLocks = parseInt(document.getElementById('lockCount').value) || 0;
-    let drawers = parseInt(document.getElementById('drawerCount').value) || 0;
-
-    let fevicolKg = parseFloat(document.getElementById('fevicolKgInput').value) || 0;
-    let heatxKg = parseFloat(document.getElementById('heatxKgInput').value) || 0;
-
-    if (h <= 0 || w <= 0 || d <= 0) {
-      alert("Height, Width aur Depth sahi enter karein!");
-      return;
+  <script>
+    function openFullImage(url, title) {
+      // Yahan aap apni lightbox ya full image popup function laga sakte hain
+      window.open(url, '_blank');
     }
 
-    let frontSqft = h * w;
-
-    let outerSides = 2 * (h * d);            
-    let outerTopBottom = 2 * (w * d);          
-    let innerPartitionsArea = numPartitions * (h * d); 
-
-    let shelfLength = numPartitions > 0 ? (w / (numPartitions + 1)) : w;
-    let singleShelfSqft = shelfLength * d;
-    let totalShelvesArea = numShelves * singleShelfSqft;
-
-    let extraFramesWastage = (h * w) * 0.12; 
-    let totalCarcassSqft = outerSides + outerTopBottom + innerPartitionsArea + totalShelvesArea + extraFramesWastage;
-
-    let innerWallsLinerArea = (2 * (h * d)) + (2 * (w * d)); 
-    let partitionsLinerArea = numPartitions * (h * d) * 2;    
-    let shelvesLinerArea = numShelves * singleShelfSqft * 2;    
-    let drawersLinerArea = drawers * 12; 
-    let totalLinerMicaSqft = innerWallsLinerArea + partitionsLinerArea + shelvesLinerArea + drawersLinerArea;
-
-    let plywoodSheetsCount = Math.ceil((totalCarcassSqft + (frontSqft * 0.8)) * 1.15 / 32);
-    let doorSheetsCount = Math.ceil((frontSqft * 1.12) / 32); 
-    let outerMicaSheetsCount = Math.ceil((frontSqft * 1.12) / 32);
-    let linerMicaSheetsCount = Math.ceil((totalLinerMicaSqft * 1.15) / 32); 
-    let backSheetsCount = Math.ceil((frontSqft * 1.08) / 32);
-
-    let labourCost = frontSqft * backend.labourRate;
-    let hingeCost = numHinges * backend.hingeRate;
-    let lockCost = numLocks * backend.lockRate;
-
-    let fevicolCost = fevicolKg * (backend.fevicolRate || 600);
-    let heatxCost = heatxKg * (backend.heatxRate || 600);
-    let glueTotalCost = fevicolCost + heatxCost;
-
-    let edgeCost = backend.edgeBandingRate; 
-    let extraHwCost = backend.extraHardwareFixed;
-
-    let kitchenAccCost = 0;
-    if (type === 'kitchen') {
-      let basketsCount = parseInt(document.getElementById('kitchenBaskets').value) || 0;
-      let bottlePulloutCount = parseInt(document.getElementById('bottlePullout').value) || 0;
-      let chimneyCount = parseInt(document.getElementById('hasChimney').value) || 0;
-      let hobCount = parseInt(document.getElementById('hasHob').value) || 0;
-
-      kitchenAccCost = (basketsCount * (backend.basketRate || 1500)) +
-                       (bottlePulloutCount * (backend.bottlePulloutRate || 3500)) +
-                       (chimneyCount * (backend.chimneyRate || 8500)) +
-                       (hobCount * (backend.hobRate || 11000));
+    function applyPreset(type, w, h, d, p1, p2, p3, p4, name) {
+      console.log("Selected Preset:", name);
+      alert(name + " selected successfully!");
     }
-
-    let totalHardwareCost = hingeCost + lockCost + glueTotalCost + edgeCost + extraHwCost + kitchenAccCost;
-
-    let carcassName = document.getElementById('carcassSelect').value;
-    let doorName = document.getElementById('doorSelect').value;
-    let micaName = document.getElementById('micaSelect').value;
-    let linerMicaName = document.getElementById('linerMicaSelect').value;
-    let backName = document.getElementById('backSelect').value;
-
-    let carcassRate = backend.carcass[carcassName] || 0;
-    let doorRate = backend.doors[doorName] || 0;
-    let micaRate = backend.mica[micaName] || 0;
-    let linerMicaRate = backend.linerMica[linerMicaName] || 0;
-    let backRate = backend.backing[backName] || 0;
-
-    let carcassTotalCost = totalCarcassSqft * carcassRate;
-    let doorTotalCost = frontSqft * doorRate;
-    let micaTotalCost = frontSqft * micaRate;
-    let linerMicaTotalCost = totalLinerMicaSqft * linerMicaRate; 
-    let backTotalCost = frontSqft * backRate;
-
-    let extraDrawers = drawers > 3 ? (drawers - 3) : 0;
-    let drawerTotalCost = extraDrawers * backend.extraDrawerRate;
-
-    let grandTotal = carcassTotalCost + doorTotalCost + micaTotalCost + linerMicaTotalCost + backTotalCost + labourCost + totalHardwareCost + drawerTotalCost;
-
-    document.getElementById('designTitleText').innerText = `Design: ${currentDesignTitle}`;
-    document.getElementById('projTypeText').innerText = typeNames[type] || "Standard Wardrobe";
-    document.getElementById('sqftText').innerText = `${frontSqft.toFixed(1)} Sq. Ft.`;
-    document.getElementById('doorsInfoText').innerText = `${numDoors} Main Doors + ${numLoftDoors} Loft Shutters (${numHinges} Hinges)`;
-    document.getElementById('singleShelfText').innerText = `${shelfLength.toFixed(1)}ft x ${d}ft (${singleShelfSqft.toFixed(1)} Sq.Ft)`;
-    document.getElementById('totalShelvesAreaText').innerText = `${numShelves} Shelves = ${totalShelvesArea.toFixed(1)} Sq. Ft.`;
-    document.getElementById('carcassSqftText').innerText = `${Math.round(totalCarcassSqft)} Sq. Ft.`;
-
-    document.getElementById('plywoodSheetsText').innerText = `${plywoodSheetsCount} Sheets (8x4)`;
-    document.getElementById('doorSheetsText').innerText = `${doorSheetsCount} Sheets (8x4)`;
-    document.getElementById('micaSheetsText').innerText = `${outerMicaSheetsCount} Sheets (8x4)`;
-    document.getElementById('linerSheetsText').innerText = `${linerMicaSheetsCount} Sheets (8x4)`;
-    document.getElementById('backSheetsText').innerText = `${backSheetsCount} Sheets (8x4)`;
-
-    document.getElementById('carcassCostText').innerText = `₹${Math.round(carcassTotalCost)}`;
-    document.getElementById('doorRateInfoText').innerText = `₹${doorRate}`;
-    document.getElementById('doorCostText').innerText = `₹${Math.round(doorTotalCost)}`;
-    document.getElementById('micaCostText').innerText = `₹${Math.round(micaTotalCost)}`;
-    document.getElementById('linerMicaCostText').innerText = `₹${Math.round(linerMicaTotalCost)}`;
-    document.getElementById('backCostText').innerText = `₹${Math.round(backTotalCost)}`;
-
-    document.getElementById('labourRateText').innerText = backend.labourRate;
-    document.getElementById('labourCostText').innerText = `₹${Math.round(labourCost)}`;
-
-    document.getElementById('hwTotalText').innerText = `₹${Math.round(totalHardwareCost)}`;
-    document.getElementById('hingeQtyText').innerText = numHinges;
-    document.getElementById('hingeRateText').innerText = backend.hingeRate;
-    document.getElementById('hingeCostText').innerText = `₹${hingeCost}`;
-
-    document.getElementById('glueCostText').innerText = `₹${glueTotalCost}`;
-    document.getElementById('extraHwCostText').innerText = `₹${edgeCost + extraHwCost}`;
-
-    let kitchenAccRow = document.getElementById('kitchenAccessoriesRow');
-    if (type === 'kitchen' && kitchenAccCost > 0) {
-      kitchenAccRow.style.display = 'flex';
-      document.getElementById('kitchenAccessoriesCostText').innerText = `₹${kitchenAccCost}`;
-    } else {
-      kitchenAccRow.style.display = 'none';
-    }
-
-    document.getElementById('drawerCostText').innerText = extraDrawers > 0 ? `₹${drawerTotalCost} (${extraDrawers} extra)` : `₹0 (Included)`;
-    document.getElementById('totalText').innerText = `₹${Math.round(grandTotal)}`;
-
-    document.getElementById('resultCard').style.display = 'block';
-
-    lastEstimate = { title: currentDesignTitle, type: typeNames[type], h, w, d, frontSqft, numDoors, numLoftDoors, numHinges, plywoodSheetsCount, doorSheetsCount, outerMicaSheetsCount, linerMicaSheetsCount, backSheetsCount, kitchenAccCost, grandTotal };
-  }
-
-  function downloadPDF() {
-    window.print();
-  }
-
-  function shareWhatsApp() {
-    if (!lastEstimate) return;
-    let text = `*GOLDEN STAR FURNITURE*%0A` +
-      `📍 _Xchange Road Lalchowk, Near Aadhar Center_%0A` +
-      `📞 _Phone: 7006688390_%0A` +
-      `----------------------------%0A` +
-      `📋 *QUOTATION: ${lastEstimate.title.toUpperCase()}*%0A` +
-      `----------------------------%0A` +
-      `📏 *Size:* ${lastEstimate.h}ft x ${lastEstimate.w}ft (Depth: ${lastEstimate.d}ft)%0A` +
-      `📐 *Front Area:* ${lastEstimate.frontSqft.toFixed(1)} Sq.Ft%0A` +
-      `🚪 *Shutters:* ${lastEstimate.numDoors} Main + ${lastEstimate.numLoftDoors} Loft (${lastEstimate.numHinges} Hinges Auto-added)%0A` +
-      `📦 *Material Sheets (8x4):*%0A` +
-      `  • Plywood (Carcass): ${lastEstimate.plywoodSheetsCount} Sheets%0A` +
-      `  • Doors / Shutters: ${lastEstimate.doorSheetsCount} Sheets%0A` +
-      `  • Outer Mica: ${lastEstimate.outerMicaSheetsCount} Sheets%0A` +
-      `  • Liner Mica: ${lastEstimate.linerMicaSheetsCount} Sheets%0A` +
-      `  • Backing Sheet: ${lastEstimate.backSheetsCount} Sheets%0A` +
-      (lastEstimate.kitchenAccCost > 0 ? `  • Kitchen Accessories & Appliances Included%0A` : ``) +
-      `----------------------------%0A` +
-      `💰 *Estimated Total:* ₹${Math.round(lastEstimate.grandTotal)}%0A` +
-      `----------------------------%0A` +
-      `📌 _Thank you for choosing Golden Star Furniture!_`;
-    window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
-  }
-
-  function openAdminWithPin() {
-    let pin = prompt("Enter Admin PIN Code:");
-    if (pin === backend.adminPin) {
-      openAdminModal();
-    } else if (pin !== null) {
-      alert("Galat PIN Code!");
-    }
-  }
-
-  function openAdminModal() {
-    let materialForm = document.getElementById('materialRatesForm');
-    materialForm.innerHTML = '';
-    
-    let categories = { carcass: 'Inner Carcass', doors: 'Doors Board', mica: 'Outer Mica', linerMica: 'Liner Mica', backing: 'Backing Sheet' };
-    for (let cat in categories) {
-      materialForm.innerHTML += `<div style="font-size:11px; font-weight:800; color:var(--primary); margin:6px 0 2px 0;">${categories[cat]}</div>`;
-      for (let k in backend[cat]) {
-        materialForm.innerHTML += `
-          <div class="mat-edit-row">
-            <span>${k}</span>
-            <input type="number" id="rate_${cat}_${k}" value="${backend[cat][k]}">
-            <span style="font-size:10px; color:var(--text-muted);">/sq.ft</span>
-            <i class="fa-solid fa-trash del-btn" onclick="deleteMaterial('${cat}', '${k}')" title="Delete Option"></i>
-          </div>`;
-      }
-    }
-
-    let adminForm = document.getElementById('adminForm');
-    adminForm.innerHTML = `
-      <div class="admin-group"><label>Labour Rate (₹ / Sq.Ft)</label><input type="number" id="adm_labour" value="${backend.labourRate}"></div>
-      <div class="admin-group"><label>Hinges Rate (₹ / Pcs)</label><input type="number" id="adm_hinge" value="${backend.hingeRate}"></div>
-      <div class="admin-group"><label>Locks Rate (₹ / Pcs)</label><input type="number" id="adm_lock" value="${backend.lockRate}"></div>
-      <div class="admin-group"><label>Fevicol Rate (₹ / Kg)</label><input type="number" id="adm_fevicol" value="${backend.fevicolRate || 600}"></div>
-      <div class="admin-group"><label>HeatX Rate (₹ / Kg)</label><input type="number" id="adm_heatx" value="${backend.heatxRate || 600}"></div>
-      <div class="admin-group"><label>SS Basket Rate (₹ / Pcs)</label><input type="number" id="adm_basket" value="${backend.basketRate || 1500}"></div>
-      <div class="admin-group"><label>Bottle Pull-out Rate (₹)</label><input type="number" id="adm_pullout" value="${backend.bottlePulloutRate || 3500}"></div>
-      <div class="num-group" style="display:none;"><label>Chimney Rate (₹)</label><input type="number" id="adm_chimney" value="${backend.chimneyRate || 8500}"></div>
-      <div class="admin-group"><label>Chimney Rate (₹)</label><input type="number" id="adm_chimney" value="${backend.chimneyRate || 8500}"></div>
-      <div class="admin-group"><label>Built-in Hob Rate (₹)</label><input type="number" id="adm_hob" value="${backend.hobRate || 11000}"></div>
-    `;
-
-    document.getElementById('newPinCode').value = '';
-    document.getElementById('adminModal').style.display = 'flex';
-  }
-
-  function addNewMaterial() {
-    let cat = document.getElementById('newMatCategory').value;
-    let name = document.getElementById('newMatName').value.trim();
-    let rate = parseFloat(document.getElementById('newMatRate').value);
-
-    if (!name || isNaN(rate) || rate <= 0) {
-      alert("Sahi material name aur rate enter karein!");
-      return;
-    }
-
-    backend[cat][name] = rate;
-    document.getElementById('newMatName').value = '';
-    document.getElementById('newMatRate').value = '';
-    alert("Naya option add ho gaya! 'Save All Changes' par click karein.");
-    openAdminModal();
-  }
-
-  function deleteMaterial(cat, key) {
-    if (Object.keys(backend[cat]).length <= 1) {
-      alert("Kam se kam ek option hona zaroori hai!");
-      return;
-    }
-    if (confirm(`Kya aap "${key}" ko delete karna chahte hain?`)) {
-      delete backend[cat][key];
-      openAdminModal();
-    }
-  }
-
-  function saveRates() {
-    let categories = ['carcass', 'doors', 'mica', 'linerMica', 'backing'];
-    categories.forEach(cat => {
-      for (let k in backend[cat]) {
-        let inputEl = document.getElementById(`rate_${cat}_${k}`);
-        if (inputEl) {
-          let val = parseFloat(inputEl.value);
-          if (!isNaN(val) > 0) {
-            backend[cat][k] = val;
-          }
-        }
-      }
-    });
-
-    backend.labourRate = parseFloat(document.getElementById('adm_labour').value) || backend.labourRate;
-    backend.hingeRate = parseFloat(document.getElementById('adm_hinge').value) || backend.hingeRate;
-    backend.lockRate = parseFloat(document.getElementById('adm_lock').value) || backend.lockRate;
-    backend.fevicolRaw = parseFloat(document.getElementById('adm_fevicol').value) || 600;
-    backend.heatxRate = parseFloat(document.getElementById('adm_heatx').value) || 600;
-    backend.basketRate = parseFloat(document.getElementById('adm_basket').value) || 1500;
-    backend.bottlePulloutRate = parseFloat(document.getElementById('adm_pullout').value) || 3500;
-    backend.chimneyRate = parseFloat(document.getElementById('adm_chimney').value) || 8500;
-    backend.hobRate = parseFloat(document.getElementById('adm_hob').value) || 11000;
-
-    let newPin = document.getElementById('newPinCode').value.trim();
-    if (newPin.length > 0) {
-      backend.adminPIN = newPin;
-    }
-
-    localStorage.setItem('cupboard_v23_backend', JSON.stringify(backend));
-    populateDropdowns();
-    closeAdmin();
-    alert("Sabhi rates successfully update ho gaye hain!");
-    calculate();
-  }
-
-  function closeAdmin() {
-    document.getElementById('adminModal').style.display = 'none';
-  }
-
-  window.onload = function() {
-    populateDropdowns();
-    toggleKitchenOptions();
-    adjustDefaultsForType();
-    calculate();
-  };
-</script>
+  </script>
 
 </body>
 </html>
