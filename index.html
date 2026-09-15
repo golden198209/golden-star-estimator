@@ -3,191 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Golden Star Furniture & Interior - Estimator</title>
-  <!-- FontAwesome Icons -->
+  <title>Golden Star Furniture - Estimator & Catalog</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background-color: #f4f4f4; padding: 15px; }
+    .main-wrapper { max-width: 900px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    
+    /* Catalog Header */
+    .catalog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .catalog-header h2 { color: #8B4513; text-transform: uppercase; font-size: 16px; border-bottom: 2px solid #8B4513; padding-bottom: 4px; }
+    .catalog-header span { font-size: 11px; color: #666; font-weight: bold; }
 
-    body {
-      background-color: #f4f4f4;
-      padding: 15px;
-    }
+    /* Scrollable Catalog */
+    .catalog-container { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 25px; }
+    .catalog-container::-webkit-scrollbar { height: 6px; }
+    .catalog-container::-webkit-scrollbar-thumb { background: #8B4513; border-radius: 3px; }
 
-    /* Main Container */
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
+    .gallery-card { min-width: 160px; width: 160px; background: #fff; border: 1px solid #ddd; border-radius: 6px; overflow: hidden; flex-shrink: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .img-box { position: relative; width: 100%; height: 110px; cursor: pointer; background: #eee; }
+    .img-box img { width: 100%; height: 100%; object-fit: cover; }
+    .zoom-hint { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.6); color: #fff; padding: 3px 5px; border-radius: 3px; font-size: 10px; }
+    .title { padding: 8px 5px; font-size: 12px; font-weight: bold; color: #8B4513; text-align: center; cursor: pointer; background: #fff; border-top: 1px solid #eee; }
+    .title:hover { background: #fdfaf6; text-decoration: underline; }
 
-    /* Section Headings */
-    h2 {
-      color: #8B4513;
-      text-transform: uppercase;
-      font-size: 16px;
-      margin-bottom: 12px;
-      border-bottom: 2px solid #8B4513;
-      padding-bottom: 6px;
-    }
-
-    /* Catalog Section */
-    .catalog-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .catalog-header span {
-      font-size: 12px;
-      color: #666;
-    }
-
-    .catalog-container {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding-bottom: 10px;
-      margin-bottom: 25px;
-    }
-
-    .catalog-container::-webkit-scrollbar {
-      height: 6px;
-    }
-
-    .catalog-container::-webkit-scrollbar-thumb {
-      background: #8B4513;
-      border-radius: 3px;
-    }
-
-    .gallery-card {
-      min-width: 150px;
-      width: 150px;
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      overflow: hidden;
-      flex-shrink: 0;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      transition: all 0.2s;
-    }
-
-    .gallery-card:hover {
-      border-color: #8B4513;
-    }
-
-    .img-box {
-      position: relative;
-      width: 100%;
-      height: 100px;
-      cursor: pointer;
-      background: #eaeaea;
-    }
-
-    .img-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .zoom-hint {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      background: rgba(0, 0, 0, 0.6);
-      color: #fff;
-      padding: 2px 5px;
-      border-radius: 3px;
-      font-size: 10px;
-    }
-
-    .title {
-      padding: 8px 4px;
-      font-size: 11px;
-      font-weight: bold;
-      color: #8B4513;
-      text-align: center;
-      cursor: pointer;
-      background: #fff;
-      border-top: 1px solid #eee;
-    }
-
-    .title:hover {
-      background: #fdfaf6;
-      text-decoration: underline;
-    }
-
-    /* Estimator Section */
-    .estimator-section {
-      background: #faf6f0;
-      padding: 15px;
-      border-radius: 8px;
-      border: 1px solid #e6d5c3;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-      margin-bottom: 15px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .form-group label {
-      font-size: 12px;
-      font-weight: bold;
-      color: #444;
-      margin-bottom: 5px;
-    }
-
-    .form-group input, .form-group select {
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 14px;
-    }
-
-    .output-box {
-      background: #fff;
-      padding: 12px;
-      border-radius: 6px;
-      border: 1px dashed #8B4513;
-      margin-top: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .output-box h3 {
-      font-size: 15px;
-      color: #333;
-    }
-
-    .price-tag {
-      font-size: 18px;
-      font-weight: bold;
-      color: #b5651d;
-    }
+    /* Estimator Box Style */
+    .estimator-box { background: #fdfaf6; border: 1px solid #e2d2c1; padding: 15px; border-radius: 6px; }
+    .estimator-box h2 { color: #8B4513; font-size: 16px; text-transform: uppercase; margin-bottom: 12px; border-bottom: 2px solid #8B4513; padding-bottom: 4px; }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 15px; }
+    .field-group { display: flex; flex-direction: column; }
+    .field-group label { font-size: 12px; font-weight: bold; color: #444; margin-bottom: 4px; }
+    .field-group input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+    
+    .result-display { background: #fff; padding: 12px; border-radius: 4px; border: 1px dashed #8B4513; display: flex; justify-content: space-between; align-items: center; }
+    .result-display h3 { font-size: 14px; color: #333; }
+    .final-price { font-size: 18px; font-weight: bold; color: #b5651d; }
   </style>
 </head>
 <body>
 
-  <div class="container">
+  <div class="main-wrapper">
     
-    <!-- Select Design Catalog Section -->
+    <!-- Design Catalog Section -->
     <div class="catalog-header">
       <h2>Select Design Catalog</h2>
       <span>(Click photo to view full size)</span>
@@ -195,99 +52,93 @@
 
     <div class="catalog-container">
       
-      <!-- Card 1: Custom Design (Yahan aap apni photo ka path ya reliable link laga sakte hain) -->
+      <!-- Custom Design Card -->
       <div class="gallery-card">
-        <div class="img-box" onclick="openFullImage('https://images.unsplash.com/photo-1555041469-a586c61ea9bc', 'My Custom Design')">
+        <div class="img-box" onclick="window.open('https://images.unsplash.com/photo-1555041469-a586c61ea9bc', '_blank')">
           <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
-          <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc" alt="Custom Design">
+          <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc" alt="Custom">
         </div>
-        <div class="title" onclick="applyPreset('custom', 7.5, 9.0, 1.5, 'My Custom Design')">My Design (Select)</div>
+        <div class="title" onclick="setPreset('My Custom Design', 7.5, 9.0, 1.5)">My Design (Select)</div>
       </div>
 
-      <!-- Card 2: Standard Design -->
+      <!-- Standard Card -->
       <div class="gallery-card">
-        <div class="img-box" onclick="openFullImage('https://images.unsplash.com/photo-1595515106969-1ce29566ff1c', 'Standard Design')">
+        <div class="img-box" onclick="window.open('https://images.unsplash.com/photo-1595515106969-1ce29566ff1c', '_blank')">
           <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
-          <img src="https://images.unsplash.com/photo-1595515106969-1ce29566ff1c" alt="Standard Design">
+          <img src="https://images.unsplash.com/photo-1595515106969-1ce29566ff1c" alt="Standard">
         </div>
-        <div class="title" onclick="applyPreset('standard', 6.0, 8.0, 1.2, 'Standard Design')">Standard (Select)</div>
+        <div class="title" onclick="setPreset('Standard Design', 6.0, 8.0, 1.2)">Standard (Select)</div>
       </div>
 
-      <!-- Card 3: Kitchen Design -->
+      <!-- Kitchen Card -->
       <div class="gallery-card">
-        <div class="img-box" onclick="openFullImage('https://images.unsplash.com/photo-1556911220-e15b29be8c8f', 'Kitchen Unit')">
+        <div class="img-box" onclick="window.open('https://images.unsplash.com/photo-1556911220-e15b29be8c8f', '_blank')">
           <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
-          <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f" alt="Kitchen Design">
+          <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f" alt="Kitchen">
         </div>
-        <div class="title" onclick="applyPreset('kitchen', 10.0, 12.0, 2.0, 'Kitchen Unit')">Kitchen (Select)</div>
+        <div class="title" onclick="setPreset('Kitchen Unit', 10.0, 12.0, 2.0)">Kitchen (Select)</div>
       </div>
 
-      <!-- Card 4: TV Unit Design -->
+      <!-- TV Unit Card -->
       <div class="gallery-card">
-        <div class="img-box" onclick="openFullImage('https://images.unsplash.com/photo-1600585154340-be6161a56a0c', 'TV Unit')">
+        <div class="img-box" onclick="window.open('https://images.unsplash.com/photo-1600585154340-be6161a56a0c', '_blank')">
           <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
           <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" alt="TV Unit">
         </div>
-        <div class="title" onclick="applyPreset('tvunit', 8.0, 7.0, 1.0, 'TV Unit')">TV Unit (Select)</div>
+        <div class="title" onclick="setPreset('TV Unit', 8.0, 7.0, 1.0)">TV Unit (Select)</div>
       </div>
 
     </div>
 
     <!-- Estimator Section -->
-    <div class="estimator-section">
+    <div class="estimator-box">
       <h2>Project Estimator</h2>
       <div class="form-grid">
-        <div class="form-group">
+        <div class="field-group">
           <label>Selected Design:</label>
-          <input type="text" id="selectedName" value="My Custom Design" readonly>
+          <input type="text" id="designName" value="My Custom Design" readonly>
         </div>
-        <div class="form-group">
+        <div class="field-group">
           <label>Width (Ft):</label>
-          <input type="number" id="widthInput" value="7.5" step="0.1" oninput="calculateEstimate()">
+          <input type="number" id="wVal" value="7.5" step="0.1" oninput="calcPrice()">
         </div>
-        <div class="form-group">
+        <div class="field-group">
           <label>Height (Ft):</label>
-          <input type="number" id="heightInput" value="9.0" step="0.1" oninput="calculateEstimate()">
+          <input type="number" id="hVal" value="9.0" step="0.1" oninput="calcPrice()">
         </div>
-        <div class="form-group">
+        <div class="field-group">
           <label>Depth (Ft):</label>
-          <input type="number" id="depthInput" value="1.5" step="0.1" oninput="calculateEstimate()">
+          <input type="number" id="dVal" value="1.5" step="0.1" oninput="calcPrice()">
         </div>
       </div>
 
-      <div class="output-box">
+      <div class="result-display">
         <h3>Estimated Price:</h3>
-        <div class="price-tag" id="totalPrice">₹ 45,000</div>
+        <div class="final-price" id="priceOutput">₹ 45,000</div>
       </div>
     </div>
 
   </div>
 
   <script>
-    function openFullImage(url, title) {
-      window.open(url, '_blank');
+    function setPreset(name, w, h, d) {
+      document.getElementById('designName').value = name;
+      document.getElementById('wVal').value = w;
+      document.getElementById('hVal').value = h;
+      document.getElementById('dVal').value = d;
+      calcPrice();
     }
 
-    function applyPreset(type, w, h, d, name) {
-      document.getElementById('selectedName').value = name;
-      document.getElementById('widthInput').value = w;
-      document.getElementById('heightInput').value = h;
-      document.getElementById('depthInput').value = d;
-      calculateEstimate();
+    function calcPrice() {
+      let w = parseFloat(document.getElementById('wVal').value) || 0;
+      let h = parseFloat(document.getElementById('hVal').value) || 0;
+      let area = w * h;
+      let ratePerSqFt = 700; // Aap yahan apna rate adjust kar sakte hain
+      let total = Math.round(area * ratePerSqFt);
+      document.getElementById('priceOutput').innerText = '₹ ' + total.toLocaleString('en-IN');
     }
 
-    function calculateEstimate() {
-      let w = parseFloat(document.getElementById('widthInput').value) || 0;
-      let h = parseFloat(document.getElementById('heightInput').value) || 0;
-      let sqft = w * h;
-      // Approximate rate calculation per sqft (e.g., ₹ 650 per sqft)
-      let rate = 650; 
-      let total = Math.round(sqft * rate);
-      document.getElementById('totalPrice').innerText = '₹ ' + total.toLocaleString('en-IN');
-    }
-
-    // Run initial calculation
-    calculateEstimate();
+    calcPrice();
   </script>
 
 </body>
