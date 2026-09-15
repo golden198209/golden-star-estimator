@@ -236,19 +236,19 @@
   <!-- VISUAL DESIGN GALLERY / CATALOG -->
   <div class="section-header"><i class="fa-solid fa-images"></i> Select Design Catalog</div>
   <div class="gallery-container">
-    <div class="gallery-card" onclick="applyPreset('wardrobe', 6, 4, 1.5, 2, 1, 3, 'Modern Wardrobe')">
+    <div class="gallery-card" onclick="applyPreset('wardrobe', 7.0, 8.0, 1.5, 4, 6, 2, 4, 'Designer LED Wardrobe')">
+      <img src="3dbd44f07be865fa2e388e2988d9f68e.jpg" alt="Custom LED Wardrobe">
+      <div class="title">LED Dressing Unit</div>
+    </div>
+    <div class="gallery-card" onclick="applyPreset('wardrobe', 6, 4, 1.5, 2, 2, 1, 3, 'Standard Wardrobe')">
       <img src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=300&auto=format&fit=crop&q=80" alt="Wardrobe">
       <div class="title">Standard Wardrobe</div>
     </div>
-    <div class="gallery-card" onclick="applyPreset('wardrobe', 7, 6, 2.0, 3, 2, 4, 'Sliding Glass Wardrobe')">
-      <img src="https://images.unsplash.com/photo-1558997519-83ea9252dfac?w=300&auto=format&fit=crop&q=80" alt="Sliding">
-      <div class="title">Sliding Wardrobe</div>
-    </div>
-    <div class="gallery-card" onclick="applyPreset('kitchen', 2.8, 8, 2.0, 2, 1, 1, 'Modular Kitchen Unit')">
+    <div class="gallery-card" onclick="applyPreset('kitchen', 2.8, 8, 2.0, 2, 0, 1, 1, 'Modular Kitchen Unit')">
       <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=300&auto=format&fit=crop&q=80" alt="Kitchen">
       <div class="title">Modular Kitchen</div>
     </div>
-    <div class="gallery-card" onclick="applyPreset('tvunit', 4, 6, 1.0, 2, 2, 3, 'TV Entertainment Unit')">
+    <div class="gallery-card" onclick="applyPreset('tvunit', 4, 6, 1.0, 2, 0, 2, 3, 'TV Entertainment Unit')">
       <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=300&auto=format&fit=crop&q=80" alt="TV Unit">
       <div class="title">TV Display Unit</div>
     </div>
@@ -306,11 +306,11 @@
   <div class="dim-row">
     <div class="input-box">
       <label>HEIGHT (FT)</label>
-      <input type="number" id="height" value="6" step="0.1">
+      <input type="number" id="height" value="7" step="0.1">
     </div>
     <div class="input-box">
       <label>WIDTH (FT)</label>
-      <input type="number" id="width" value="4" step="0.1">
+      <input type="number" id="width" value="8" step="0.1">
     </div>
     <div class="input-box">
       <label>DEPTH (FT)</label>
@@ -318,23 +318,27 @@
     </div>
   </div>
 
-  <!-- 2. Manual Custom Entry for Doors, Partitions & Shelves -->
-  <div class="section-header"><i class="fa-solid fa-door-open"></i> 2. Doors, Partitions & Shelves (Enter Quantity)</div>
+  <!-- 2. Doors, Loft Shutters, Partitions & Shelves -->
+  <div class="section-header"><i class="fa-solid fa-door-open"></i> 2. Doors, Loft Shutters & Partitions</div>
   <div class="dim-row">
     <div class="input-box">
-      <label>NUMBER OF DOORS (SHUTTERS)</label>
-      <input type="number" id="doorCount" value="2" min="0" oninput="updateHingesCount()">
+      <label>MAIN WARDROBE DOORS</label>
+      <input type="number" id="doorCount" value="4" min="0" oninput="updateHingesCount()">
     </div>
     <div class="input-box">
-      <label>CENTER PARTITIONS</label>
-      <input type="number" id="partitions" value="1" min="0">
+      <label>TOP LOFT / SMALL DOORS</label>
+      <input type="number" id="loftDoorCount" value="6" min="0" oninput="updateHingesCount()">
     </div>
   </div>
 
   <div class="dim-row">
     <div class="input-box">
+      <label>CENTER PARTITIONS</label>
+      <input type="number" id="partitions" value="2" min="0">
+    </div>
+    <div class="input-box">
       <label>NUMBER OF SHELVES</label>
-      <input type="number" id="shelves" value="3" min="0">
+      <input type="number" id="shelves" value="4" min="0">
     </div>
   </div>
 
@@ -377,8 +381,8 @@
 
   <div class="dim-row">
     <div class="input-box">
-      <label>HINGES / KABZE (AUTO 3 PER DOOR)</label>
-      <input type="number" id="hingeCount" value="6" readonly style="color:var(--accent);">
+      <label>TOTAL HINGES (AUTO 3 PER DOOR)</label>
+      <input type="number" id="hingeCount" value="30" readonly style="color:var(--accent);">
     </div>
     <div class="input-box">
       <label>LOCKS NEEDED (PCS)</label>
@@ -386,7 +390,7 @@
     </div>
     <div class="input-box">
       <label>DRAWERS NEEDED</label>
-      <input type="number" id="drawerCount" value="2" min="0">
+      <input type="number" id="drawerCount" value="3" min="0">
     </div>
   </div>
 
@@ -402,7 +406,7 @@
     </div>
     <div class="res-row"><span>Project Type:</span><strong id="projTypeText">Standard Wardrobe</strong></div>
     <div class="res-row"><span>Front Size:</span><strong id="sqftText">0 Sq. Ft.</strong></div>
-    <div class="res-row"><span>Doors Breakdown:</span><strong id="doorsInfoText">2 Doors</strong></div>
+    <div class="res-row"><span>Shutters Breakdown:</span><strong id="doorsInfoText">Main & Loft Doors</strong></div>
     <div class="res-row highlight"><span>1 Single Shelf Size:</span><strong id="singleShelfText">0 Ft x 0 Ft</strong></div>
     <div class="res-row highlight"><span>Total Shelves Area:</span><strong id="totalShelvesAreaText">0 Sq. Ft.</strong></div>
     <div class="res-row highlight"><span>Total Carcass Area:</span><strong id="carcassSqftText">0 Sq. Ft.</strong></div>
@@ -457,19 +461,16 @@
   <div class="modal-content">
     <h3 style="color:var(--primary); margin-top:0;">Admin Panel - Material & Rates</h3>
     
-    <!-- EDIT EXISTING RATES -->
     <div style="border-bottom:1px solid #e0cdbc; padding-bottom:12px; margin-bottom:12px;">
       <h4 style="margin:0 0 8px 0; color:var(--accent);"><i class="fa-solid fa-pen-to-square"></i> Edit Material & Mica Rates (₹ / Sq.Ft)</h4>
       <div id="materialRatesForm"></div>
     </div>
 
-    <!-- HARDWARE SECTION -->
     <div style="border-bottom:1px solid #e0cdbc; padding-bottom:12px; margin-bottom:12px;">
       <h4 style="margin:0 0 8px 0; color:var(--accent);"><i class="fa-solid fa-wrench"></i> Hardware & Kitchen Accessory Rates</h4>
       <div id="adminForm"></div>
     </div>
 
-    <!-- NEW MATERIAL ADD-ON SECTION -->
     <div style="border-bottom:1px solid #e0cdbc; padding-bottom:12px; margin-bottom:12px;">
       <h4 style="margin:0 0 8px 0; color:var(--accent);"><i class="fa-solid fa-plus-circle"></i> Add New Option</h4>
       <div class="admin-group">
@@ -544,11 +545,11 @@
     adminPin: '1234'
   };
 
-  let backend = JSON.parse(localStorage.getItem('cupboard_v21_backend')) || defaultBackend;
+  let backend = JSON.parse(localStorage.getItem('cupboard_v22_backend')) || defaultBackend;
   backend.labourRate = 300;
 
   let lastEstimate = null;
-  let currentDesignTitle = "Standard Wardrobe";
+  let currentDesignTitle = "Designer LED Wardrobe";
 
   function populateDropdowns() {
     fillSelect('carcassSelect', backend.carcass, '/sq.ft');
@@ -576,7 +577,7 @@
     }
   }
 
-  function applyPreset(type, h, w, d, doors, partitions, shelves, title) {
+  function applyPreset(type, h, w, d, doors, loftDoors, partitions, shelves, title) {
     currentDesignTitle = title;
     document.getElementById('cabinetType').value = type;
     toggleKitchenOptions();
@@ -584,6 +585,7 @@
     document.getElementById('width').value = w;
     document.getElementById('depth').value = d;
     document.getElementById('doorCount').value = doors;
+    document.getElementById('loftDoorCount').value = loftDoors;
     document.getElementById('partitions').value = partitions;
     document.getElementById('shelves').value = shelves;
     updateHingesCount();
@@ -599,6 +601,7 @@
       document.getElementById('partitions').value = "1";
       document.getElementById('shelves').value = "1";
       document.getElementById('doorCount').value = "2";
+      document.getElementById('loftDoorCount').value = "0";
       document.getElementById('drawerCount').value = "2";
     } else if (type === 'tvunit') {
       currentDesignTitle = "TV Display Unit";
@@ -607,14 +610,16 @@
       document.getElementById('partitions').value = "2";
       document.getElementById('shelves').value = "3";
       document.getElementById('doorCount').value = "2";
+      document.getElementById('loftDoorCount').value = "0";
       document.getElementById('drawerCount').value = "1";
     } else {
       currentDesignTitle = "Standard Wardrobe";
-      document.getElementById('height').value = "6.0";
+      document.getElementById('height').value = "7.0";
       document.getElementById('depth').value = "1.5";
-      document.getElementById('partitions').value = "1";
-      document.getElementById('shelves').value = "3";
-      document.getElementById('doorCount').value = "2";
+      document.getElementById('partitions').value = "2";
+      document.getElementById('shelves').value = "4";
+      document.getElementById('doorCount').value = "4";
+      document.getElementById('loftDoorCount').value = "6";
       document.getElementById('drawerCount').value = "3";
     }
     updateHingesCount();
@@ -622,7 +627,8 @@
 
   function updateHingesCount() {
     let doors = parseInt(document.getElementById('doorCount').value) || 0;
-    let totalHinges = doors * 3;
+    let loftDoors = parseInt(document.getElementById('loftDoorCount').value) || 0;
+    let totalHinges = (doors + loftDoors) * 3;
     document.getElementById('hingeCount').value = totalHinges;
   }
 
@@ -635,9 +641,11 @@
     let d = parseFloat(document.getElementById('depth').value) || 0;
     
     let numDoors = parseInt(document.getElementById('doorCount').value) || 0;
+    let numLoftDoors = parseInt(document.getElementById('loftDoorCount').value) || 0;
+    let totalDoors = numDoors + numLoftDoors;
     let numPartitions = parseInt(document.getElementById('partitions').value) || 0;
     let numShelves = parseInt(document.getElementById('shelves').value) || 0;
-    let numHinges = numDoors * 3;
+    let numHinges = totalDoors * 3;
     let numLocks = parseInt(document.getElementById('lockCount').value) || 0;
     let drawers = parseInt(document.getElementById('drawerCount').value) || 0;
 
@@ -726,7 +734,7 @@
     document.getElementById('designTitleText').innerText = `Design: ${currentDesignTitle}`;
     document.getElementById('projTypeText').innerText = typeNames[type] || "Standard Wardrobe";
     document.getElementById('sqftText').innerText = `${frontSqft.toFixed(1)} Sq. Ft.`;
-    document.getElementById('doorsInfoText').innerText = `${numDoors} Doors (${numHinges} Hinges)`;
+    document.getElementById('doorsInfoText').innerText = `${numDoors} Main Doors + ${numLoftDoors} Loft Shutters (${numHinges} Hinges)`;
     document.getElementById('singleShelfText').innerText = `${shelfLength.toFixed(1)}ft x ${d}ft (${singleShelfSqft.toFixed(1)} Sq.Ft)`;
     document.getElementById('totalShelvesAreaText').innerText = `${numShelves} Shelves = ${totalShelvesArea.toFixed(1)} Sq. Ft.`;
     document.getElementById('carcassSqftText').innerText = `${Math.round(totalCarcassSqft)} Sq. Ft.`;
@@ -768,7 +776,7 @@
 
     document.getElementById('resultCard').style.display = 'block';
 
-    lastEstimate = { title: currentDesignTitle, type: typeNames[type], h, w, d, frontSqft, numDoors, numHinges, plywoodSheetsCount, doorSheetsCount, outerMicaSheetsCount, linerMicaSheetsCount, backSheetsCount, kitchenAccCost, grandTotal };
+    lastEstimate = { title: currentDesignTitle, type: typeNames[type], h, w, d, frontSqft, numDoors, numLoftDoors, numHinges, plywoodSheetsCount, doorSheetsCount, outerMicaSheetsCount, linerMicaSheetsCount, backSheetsCount, kitchenAccCost, grandTotal };
   }
 
   function downloadPDF() {
@@ -785,7 +793,7 @@
       `----------------------------%0A` +
       `📏 *Size:* ${lastEstimate.h}ft x ${lastEstimate.w}ft (Depth: ${lastEstimate.d}ft)%0A` +
       `📐 *Front Area:* ${lastEstimate.frontSqft.toFixed(1)} Sq.Ft%0A` +
-      `🚪 *Doors:* ${lastEstimate.numDoors} Doors (${lastEstimate.numHinges} Hinges Auto-added)%0A` +
+      `🚪 *Shutters:* ${lastEstimate.numDoors} Main + ${lastEstimate.numLoftDoors} Loft (${lastEstimate.numHinges} Hinges Auto-added)%0A` +
       `📦 *Material Sheets (8x4):*%0A` +
       `  • Plywood (Carcass): ${lastEstimate.plywoodSheetsCount} Sheets%0A` +
       `  • Doors / Shutters: ${lastEstimate.doorSheetsCount} Sheets%0A` +
@@ -901,7 +909,7 @@
       backend.adminPin = newPin;
     }
 
-    localStorage.setItem('cupboard_v21_backend', JSON.stringify(backend));
+    localStorage.setItem('cupboard_v22_backend', JSON.stringify(backend));
     populateDropdowns();
     closeAdmin();
     alert("Sabhi rates successfully update ho gaye hain!");
