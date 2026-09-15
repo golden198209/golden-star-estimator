@@ -476,7 +476,7 @@
     adminPin: '1234'
   };
 
-  let backend = JSON.parse(localStorage.getItem('cupboard_v17_backend')) || defaultBackend;
+  let backend = JSON.parse(localStorage.getItem('cupboard_v18_backend')) || defaultBackend;
   backend.labourRate = 300;
 
   let lastEstimate = null;
@@ -626,11 +626,12 @@
     let linerMicaRate = backend.linerMica[linerMicaName] || 0;
     let backRate = backend.backing[backName] || 0;
 
-    let carcassTotalCost = totalCarcassSqft * carcassRate;
-    let doorTotalCost = frontSqft * doorRate;
-    let micaTotalCost = frontSqft * micaRate;
-    let linerMicaTotalCost = totalLinerMicaSqft * linerMicaRate; 
-    let backTotalCost = frontSqft * backRate;
+    // Workshop Sheet-Based Cost Calculation (Prevents Carpenter Loss)
+    let carcassTotalCost = plywoodSheetsCount * 32 * carcassRate;
+    let doorTotalCost = doorSheetsCount * 32 * doorRate;
+    let micaTotalCost = outerMicaSheetsCount * 32 * micaRate;
+    let linerMicaTotalCost = linerMicaSheetsCount * 32 * linerMicaRate; 
+    let backTotalCost = backSheetsCount * 32 * backRate;
 
     let extraDrawers = drawers > 3 ? (drawers - 3) : 0;
     let drawerTotalCost = extraDrawers * backend.extraDrawerRate;
@@ -822,7 +823,7 @@
       alert("Admin PIN successfully updated!");
     }
 
-    localStorage.setItem('cupboard_v17_backend', JSON.stringify(backend));
+    localStorage.setItem('cupboard_v18_backend', JSON.stringify(backend));
     populateDropdowns();
     closeAdmin();
     alert("All rates updated and saved successfully!");
