@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Golden Star Furniture & Interior - Design Catalog</title>
-  <!-- FontAwesome for Icons -->
+  <title>Golden Star Furniture & Interior - Estimator</title>
+  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * {
@@ -15,48 +15,49 @@
     }
 
     body {
-      background-color: #f8f9fa;
+      background-color: #f4f4f4;
       padding: 15px;
     }
 
-    /* Section Styling */
-    .catalog-section {
+    /* Main Container */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
       background: #fff;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
+    /* Section Headings */
+    h2 {
+      color: #8B4513;
+      text-transform: uppercase;
+      font-size: 16px;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #8B4513;
+      padding-bottom: 6px;
+    }
+
+    /* Catalog Section */
     .catalog-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
-      border-bottom: 2px solid #8B4513;
-      padding-bottom: 8px;
-    }
-
-    .catalog-header h2 {
-      color: #8B4513;
-      text-transform: uppercase;
-      font-size: 16px;
-      letter-spacing: 0.5px;
+      margin-bottom: 10px;
     }
 
     .catalog-header span {
       font-size: 12px;
       color: #666;
-      font-weight: bold;
     }
 
-    /* Horizontal Scroll Catalog Container */
     .catalog-container {
       display: flex;
       gap: 12px;
       overflow-x: auto;
       padding-bottom: 10px;
-      scroll-behavior: smooth;
+      margin-bottom: 25px;
     }
 
     .catalog-container::-webkit-scrollbar {
@@ -68,32 +69,28 @@
       border-radius: 3px;
     }
 
-    /* Gallery Card Styling */
     .gallery-card {
-      min-width: 160px;
-      width: 160px;
+      min-width: 150px;
+      width: 150px;
       background: #fff;
-      border: 1px solid #e0e0e0;
+      border: 1px solid #ddd;
       border-radius: 6px;
       overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
       flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: all 0.2s;
     }
 
     .gallery-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+      border-color: #8B4513;
     }
 
     .img-box {
       position: relative;
       width: 100%;
-      height: 110px;
+      height: 100px;
       cursor: pointer;
-      background: #f0f0f0;
+      background: #eaeaea;
     }
 
     .img-box img {
@@ -104,27 +101,24 @@
 
     .zoom-hint {
       position: absolute;
-      top: 6px;
-      right: 6px;
+      top: 5px;
+      right: 5px;
       background: rgba(0, 0, 0, 0.6);
       color: #fff;
-      padding: 3px 5px;
+      padding: 2px 5px;
       border-radius: 3px;
-      font-size: 11px;
+      font-size: 10px;
     }
 
     .title {
-      padding: 8px 5px;
-      font-size: 12px;
+      padding: 8px 4px;
+      font-size: 11px;
       font-weight: bold;
       color: #8B4513;
       text-align: center;
       cursor: pointer;
       background: #fff;
       border-top: 1px solid #eee;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .title:hover {
@@ -132,42 +126,82 @@
       text-decoration: underline;
     }
 
-    /* Project Type Section Example */
-    .project-type-section {
-      background: #fff;
+    /* Estimator Section */
+    .estimator-section {
+      background: #faf6f0;
       padding: 15px;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid #e6d5c3;
     }
 
-    .project-type-section h2 {
-      color: #8B4513;
-      text-transform: uppercase;
-      font-size: 16px;
-      border-bottom: 2px solid #8B4513;
-      padding-bottom: 8px;
-      margin-bottom: 12px;
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-size: 12px;
+      font-weight: bold;
+      color: #444;
+      margin-bottom: 5px;
+    }
+
+    .form-group input, .form-group select {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .output-box {
+      background: #fff;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px dashed #8B4513;
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .output-box h3 {
+      font-size: 15px;
+      color: #333;
+    }
+
+    .price-tag {
+      font-size: 18px;
+      font-weight: bold;
+      color: #b5651d;
     }
   </style>
 </head>
 <body>
 
-  <!-- Select Design Catalog Section -->
-  <div class="catalog-section">
+  <div class="container">
+    
+    <!-- Select Design Catalog Section -->
     <div class="catalog-header">
-      <h2><i class="fa-solid fa-shapes"></i> Select Design Catalog</h2>
+      <h2>Select Design Catalog</h2>
       <span>(Click photo to view full size)</span>
     </div>
 
     <div class="catalog-container">
       
-      <!-- Card 1: Custom Design (Fixed & Working) -->
+      <!-- Card 1: Custom Design (Yahan aap apni photo ka path ya reliable link laga sakte hain) -->
       <div class="gallery-card">
-        <div class="img-box" onclick="openFullImage('https://i.ibb.co/6y4g8h3/cub.jpg', 'My Custom Design')">
+        <div class="img-box" onclick="openFullImage('https://images.unsplash.com/photo-1555041469-a586c61ea9bc', 'My Custom Design')">
           <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
-          <img src="https://i.ibb.co/6y4g8h3/cub.jpg" alt="Custom Design">
+          <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc" alt="Custom Design">
         </div>
-        <div class="title" onclick="applyPreset('custom', 7.5, 9.0, 1.5, 6, 6, 2, 4, 'My Custom Design');">My Design (Select)</div>
+        <div class="title" onclick="applyPreset('custom', 7.5, 9.0, 1.5, 'My Custom Design')">My Design (Select)</div>
       </div>
 
       <!-- Card 2: Standard Design -->
@@ -176,7 +210,7 @@
           <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
           <img src="https://images.unsplash.com/photo-1595515106969-1ce29566ff1c" alt="Standard Design">
         </div>
-        <div class="title" onclick="applyPreset('standard', 6.0, 8.0, 1.2, 5, 5, 2, 3, 'Standard Design');">Standard (Select)</div>
+        <div class="title" onclick="applyPreset('standard', 6.0, 8.0, 1.2, 'Standard Design')">Standard (Select)</div>
       </div>
 
       <!-- Card 3: Kitchen Design -->
@@ -185,7 +219,7 @@
           <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
           <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f" alt="Kitchen Design">
         </div>
-        <div class="title" onclick="applyPreset('kitchen', 10.0, 12.0, 2.0, 8, 8, 4, 6, 'Kitchen Unit');">Kitchen (Select)</div>
+        <div class="title" onclick="applyPreset('kitchen', 10.0, 12.0, 2.0, 'Kitchen Unit')">Kitchen (Select)</div>
       </div>
 
       <!-- Card 4: TV Unit Design -->
@@ -194,28 +228,66 @@
           <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
           <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" alt="TV Unit">
         </div>
-        <div class="title" onclick="applyPreset('tvunit', 8.0, 7.0, 1.0, 4, 4, 2, 2, 'TV Unit');">TV Unit (Select)</div>
+        <div class="title" onclick="applyPreset('tvunit', 8.0, 7.0, 1.0, 'TV Unit')">TV Unit (Select)</div>
       </div>
 
     </div>
-  </div>
 
-  <!-- Project Type Section -->
-  <div class="project-type-section">
-    <h2>Project Type</h2>
-    <p>Aapka project type content yahan aage aayega...</p>
+    <!-- Estimator Section -->
+    <div class="estimator-section">
+      <h2>Project Estimator</h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Selected Design:</label>
+          <input type="text" id="selectedName" value="My Custom Design" readonly>
+        </div>
+        <div class="form-group">
+          <label>Width (Ft):</label>
+          <input type="number" id="widthInput" value="7.5" step="0.1" oninput="calculateEstimate()">
+        </div>
+        <div class="form-group">
+          <label>Height (Ft):</label>
+          <input type="number" id="heightInput" value="9.0" step="0.1" oninput="calculateEstimate()">
+        </div>
+        <div class="form-group">
+          <label>Depth (Ft):</label>
+          <input type="number" id="depthInput" value="1.5" step="0.1" oninput="calculateEstimate()">
+        </div>
+      </div>
+
+      <div class="output-box">
+        <h3>Estimated Price:</h3>
+        <div class="price-tag" id="totalPrice">₹ 45,000</div>
+      </div>
+    </div>
+
   </div>
 
   <script>
     function openFullImage(url, title) {
-      // Image zoom / new tab preview function
       window.open(url, '_blank');
     }
 
-    function applyPreset(type, w, h, d, p1, p2, p3, p4, name) {
-      console.log("Selected preset:", name);
-      // Aap apna yahan ka original function logic rakh sakte hain
+    function applyPreset(type, w, h, d, name) {
+      document.getElementById('selectedName').value = name;
+      document.getElementById('widthInput').value = w;
+      document.getElementById('heightInput').value = h;
+      document.getElementById('depthInput').value = d;
+      calculateEstimate();
     }
+
+    function calculateEstimate() {
+      let w = parseFloat(document.getElementById('widthInput').value) || 0;
+      let h = parseFloat(document.getElementById('heightInput').value) || 0;
+      let sqft = w * h;
+      // Approximate rate calculation per sqft (e.g., ₹ 650 per sqft)
+      let rate = 650; 
+      let total = Math.round(sqft * rate);
+      document.getElementById('totalPrice').innerText = '₹ ' + total.toLocaleString('en-IN');
+    }
+
+    // Run initial calculation
+    calculateEstimate();
   </script>
 
 </body>
