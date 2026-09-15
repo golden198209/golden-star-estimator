@@ -255,43 +255,23 @@
     </div>
   </div>
 
-  <!-- 2. Customer Choices for Doors, Partitions & Shelves -->
-  <div class="section-header"><i class="fa-solid fa-door-open"></i> 2. Doors, Partitions & Shelves Setup</div>
+  <!-- 2. Manual Custom Entry for Doors, Partitions & Shelves -->
+  <div class="section-header"><i class="fa-solid fa-door-open"></i> 2. Doors, Partitions & Shelves (Enter Quantity)</div>
   <div class="dim-row">
     <div class="input-box">
       <label>NUMBER OF DOORS (SHUTTERS)</label>
-      <select id="doorCount" onchange="updateHingesCount()">
-        <option value="1">1 Door</option>
-        <option value="2" selected>2 Doors</option>
-        <option value="3">3 Doors</option>
-        <option value="4">4 Doors</option>
-        <option value="5">5 Doors</option>
-        <option value="6">6 Doors</option>
-      </select>
+      <input type="number" id="doorCount" value="2" min="0" oninput="updateHingesCount()">
     </div>
     <div class="input-box">
       <label>CENTER PARTITIONS</label>
-      <select id="partitions">
-        <option value="0">0 Partition (Open Box)</option>
-        <option value="1" selected>1 Vertical Partition</option>
-        <option value="2">2 Vertical Partitions</option>
-        <option value="3">3 Vertical Partitions</option>
-      </select>
+      <input type="number" id="partitions" value="1" min="0">
     </div>
   </div>
 
   <div class="dim-row">
     <div class="input-box">
       <label>NUMBER OF SHELVES</label>
-      <select id="shelves">
-        <option value="0">0 Shelves</option>
-        <option value="1">1 Shelf</option>
-        <option value="2">2 Shelves</option>
-        <option value="3" selected>3 Shelves</option>
-        <option value="4">4 Shelves</option>
-        <option value="5">5 Shelves</option>
-        <option value="6">6 Shelves</option>
-      </select>
+      <input type="number" id="shelves" value="3" min="0">
     </div>
   </div>
 
@@ -501,7 +481,7 @@
     adminPin: '1234'
   };
 
-  let backend = JSON.parse(localStorage.getItem('cupboard_v19_backend')) || defaultBackend;
+  let backend = JSON.parse(localStorage.getItem('cupboard_v20_backend')) || defaultBackend;
   backend.labourRate = 300;
 
   let lastEstimate = null;
@@ -560,7 +540,7 @@
   }
 
   function updateHingesCount() {
-    let doors = parseInt(document.getElementById('doorCount').value) || 2;
+    let doors = parseInt(document.getElementById('doorCount').value) || 0;
     // Automatic 3 hinges per door calculation
     let totalHinges = doors * 3;
     document.getElementById('hingeCount').value = totalHinges;
@@ -574,7 +554,7 @@
     let w = parseFloat(document.getElementById('width').value) || 0;
     let d = parseFloat(document.getElementById('depth').value) || 0;
     
-    let numDoors = parseInt(document.getElementById('doorCount').value) || 2;
+    let numDoors = parseInt(document.getElementById('doorCount').value) || 0;
     let numPartitions = parseInt(document.getElementById('partitions').value) || 0;
     let numShelves = parseInt(document.getElementById('shelves').value) || 0;
     let numHinges = numDoors * 3; // 3 hinges per door automatically
@@ -841,7 +821,7 @@
       backend.adminPin = newPin;
     }
 
-    localStorage.setItem('cupboard_v19_backend', JSON.stringify(backend));
+    localStorage.setItem('cupboard_v20_backend', JSON.stringify(backend));
     populateDropdowns();
     closeAdmin();
     alert("Sabhi rates successfully update ho gaye hain!");
