@@ -499,7 +499,6 @@
 
   function autoCalculateHinges() {
     let doors = parseInt(document.getElementById('doorCountInput').value) || 0;
-    // 1 door = 3 hinges automatically
     let calculatedHinges = doors * 3;
     document.getElementById('hingeCount').value = calculatedHinges;
   }
@@ -566,8 +565,8 @@
 
     let frontSqft = h * w;
 
-    let outerSides = 2 * (h * d);            
-    let outerTopBottom = 2 * (w * d);         
+    let outerSides = 2 * (h * d);          
+    let outerTopBottom = 2 * (w * d);      
     let innerPartitionsArea = numPartitions * (h * d); 
 
     let shelfLength = numPartitions > 0 ? (w / (numPartitions + 1)) : w;
@@ -705,17 +704,20 @@
       `  • Backing Sheet: ${lastEstimate.backSheetsCount} Sheets%0A` +
       (lastEstimate.kitchenAccCost > 0 ? `  • Kitchen Accessories & Appliances Included%0A` : ``) +
       `----------------------------%0A` +
-      `💰 *Estimated Total:* ₹${Math.round(lastEstimate.grandTotal)}`;
+      `     💰 *Estimated Total:* *₹${Math.round(lastEstimate.grandTotal).toLocaleString('en-IN')}*%0A` +
+      `----------------------------%0A` +
+      `_Thank you for choosing Golden Star Furniture!_`;
+
     window.open(`https://wa.me/?text=${text}`, '_blank');
   }
 
   function openAdminWithPin() {
-    let pin = prompt("Enter Admin PIN:");
+    let pin = prompt("Enter Admin PIN (Default is 1234):");
     if (pin === backend.adminPin) {
-      renderAdminModal();
+      renderAdminForm();
       document.getElementById('adminModal').style.display = 'flex';
     } else if (pin !== null) {
-      alert("Galat PIN!");
+      alert("Galat PIN! Access denied.");
     }
   }
 
@@ -723,32 +725,42 @@
     document.getElementById('adminModal').style.display = 'none';
   }
 
-  function renderAdminModal() {
-    let matForm = document.getElementById('materialRatesForm');
-    matForm.innerHTML = '';
+  function renderAdminForm() {
+    let materialContainer = document.getElementById('materialRatesForm');
+    materialContainer.innerHTML = '';
     
-    let categories = { carcass: 'Inner Carcass', doors: 'Doors', mica: 'Outer Mica', linerMica: 'Liner Mica', backing: 'Backing Sheet' };
-    for (let cat in categories) {
-      matForm.innerHTML += `<div style="font-size:11px; font-weight:800; color:var(--primary); margin:6px 0 2px 0;">${categories[cat]}</div>`;
-      for (let item in backend[cat]) {
-        matForm.innerHTML += `
+    let categories = [
+      { key: 'carcass', title: 'Carcass Plywood / Boards' },
+      { key: 'doors', title: 'Door Boards' },
+      { key: 'mica', title: 'Outer Mica' },
+      { key: 'linerMica', title: 'Liner Mica (Inner)' },
+      { key: 'backing', title: 'Backing Sheets' }
+    ];
+
+    categories.forEach(cat => {
+      materialContainer.innerHTML += `<div style="font-size:11px; font-weight:800; color:var(--primary); margin:6px 0 2px 0;">${cat.title}</div>`;
+      for (let k in backend[cat.key]) {
+        materialContainer.innerHTML += `
           <div class="mat-edit-row">
-            <span>${item}</span>
-            <input type="number" id="rate_${cat}_${item}" value="${backend[cat][item]}">
-            <i class="fa-solid fa-trash del-btn" onclick="deleteMaterial('${cat}', '${item}')"></i>
+            <span>${k}</span>
+            <input type="number" id="rate_${cat.key}_${k}" value="${backend[cat.key][k]}">
+            <span style="font-size:10px; color:var(--text-muted);">₹/sqft</span>
+            <i class="fa-solid fa-trash del-btn" onclick="deleteMaterial('${cat.key}', '${k}')" title="Delete"></i>
           </div>
         `;
       }
-    }
+    });
 
-    let adminForm = document.getElementById('adminForm');
-    adminForm.innerHTML = `
-      <div class="admin-group"><label>Hinges Rate (₹/pc)</label><input type="number" id="adm_hinge" value="${backend.hingeRate}"></div>
-      <div class="admin-group"><label>Locks Rate (₹/pc)</label><input type="number" id="adm_lock" value="${backend.lockRate}"></div>
-      <div class="admin-group"><label>Fevicol Rate (₹/kg)</label><input type="number" id="adm_fev" value="${backend.fevicolRate}"></div>
-      <div class="admin-group"><label>Kitchen Baskets Rate (₹/pc)</label><input type="number" id="adm_basket" value="${backend.basketRate}"></div>
-      <div class="admin-group"><label>Chimney Rate (₹)</label><input type="number" id="adm_chimney" value="${backend.chimneyRate}"></div>
-      <div class="admin-group"><label>Built-in Hob Rate (₹)</label><input type="number" id="adm_hob" value="${backend.hobRate}"></div>
+    let hardwareContainer = document.getElementById('adminForm');
+    hardwareContainer.innerHTML = `
+      <div class="admin-group"><label>Labour Rate (₹/Sq.Ft)</label><input type="number" id="admin_labourRate" value="${backend.labourRate}"></div>
+      <div class="admin-group"><label>Hinges Rate per Pcs (₹)</label><input type="number" id="admin_hingeRate" value="${backend.hingeRate}"></div>
+      <div class="admin-group"><label>Lock Rate per Pcs (₹)</label><input type="number" id="admin_lockRate" value="${backend.lockRate}"></div>
+      <div class="admin-group"><label>Fevicol Rate per Kg (₹)</label><input type="number" id="admin_fevicolRate" value="${backend.fevicolRate || 600}"></div>
+      <div class="admin-group"><label>HeatX Rate per Kg (₹)</label><input type="number" id="admin_heatxRate" value="${backend.heatxRate || 600}"></div>
+      <div class="admin-group"><label>Kitchen Wire Basket Rate (₹)</label><input type="number" id="admin_basketRate" value="${backend.basketRate || 1500}"></div>
+      <div class="admin-group"><label>Chimney Rate (₹)</label><input type="number" id="admin_chimneyRate" value="${backend.chimneyRate || 8500}"></div>
+      <div class="admin-group"><label>Built-in Hob Rate (₹)</label><input type="number" id="admin_hobRate" value="${backend.hobRate || 11000}"></div>
     `;
   }
 
@@ -757,58 +769,70 @@
     let name = document.getElementById('newMatName').value.trim();
     let rate = parseFloat(document.getElementById('newMatRate').value);
 
-    if (!name || isNaN(rate)) {
-      alert("Sahi naam aur rate bharein!");
+    if (!name || isNaN(rate) || rate <= 0) {
+      alert("Sahi naam aur rate enter karein!");
       return;
     }
 
     backend[cat][name] = rate;
     document.getElementById('newMatName').value = '';
     document.getElementById('newMatRate').value = '';
-    renderAdminModal();
+    renderAdminForm();
+    alert("New option added successfully!");
   }
 
-  function deleteMaterial(cat, item) {
+  function deleteMaterial(cat, key) {
     if (Object.keys(backend[cat]).length <= 1) {
       alert("Kam se kam ek option rehna zaroori hai!");
       return;
     }
-    delete backend[cat][item];
-    renderAdminModal();
+    if (confirm(`Aap kya sach mein "${key}" ko delete karna chahte hain?`)) {
+      delete backend[cat][key];
+      renderAdminForm();
+    }
   }
 
   function saveRates() {
     let categories = ['carcass', 'doors', 'mica', 'linerMica', 'backing'];
-    for (let cat of categories) {
-      for (let item in backend[cat]) {
-        let inputElem = document.getElementById(`rate_${cat}_${item}`);
-        if (inputElem) {
-          backend[cat][item] = parseFloat(inputElem.value) || backend[cat][item];
+    categories.forEach(cat => {
+      for (let k in backend[cat]) {
+        let inputEl = document.getElementById(`rate_${cat}_${k}`);
+        if (inputEl) {
+          let val = parseFloat(inputEl.value);
+          if (!isNaN(val) && val > 0) {
+            backend[cat][k] = val;
+          }
         }
       }
-    }
+    });
 
-    backend.hingeRate = parseFloat(document.getElementById('adm_hinge').value) || backend.hingeRate;
-    backend.lockRate = parseFloat(document.getElementById('adm_lock').value) || backend.lockRate;
-    backend.fevicolRate = parseFloat(document.getElementById('adm_fev').value) || backend.fevicolRate;
-    backend.basketRate = parseFloat(document.getElementById('adm_basket').value) || backend.basketRate;
-    backend.chimneyRate = parseFloat(document.getElementById('adm_chimney').value) || backend.chimneyRate;
-    backend.hobRate = parseFloat(document.getElementById('adm_hob').value) || backend.hobRate;
+    backend.labourRate = parseFloat(document.getElementById('admin_labourRate').value) || 300;
+    backend.hingeRate = parseFloat(document.getElementById('admin_hingeRate').value) || 250;
+    backend.lockRate = parseFloat(document.getElementById('admin_lockRate').value) || 300;
+    backend.fevicolRate = parseFloat(document.getElementById('admin_fevicolRate').value) || 600;
+    backend.heatxRate = parseFloat(document.getElementById('admin_heatxRate').value) || 600;
+    backend.basketRate = parseFloat(document.getElementById('admin_basketRate').value) || 1500;
+    backend.chimneyRate = parseFloat(document.getElementById('admin_chimneyRate').value) || 8500;
+    backend.hobRate = parseFloat(document.getElementById('admin_hobRate').value) || 11000;
 
     let newPin = document.getElementById('newPinCode').value.trim();
     if (newPin) {
       backend.adminPin = newPin;
+      document.getElementById('newPinCode').value = '';
+      alert("Admin PIN successfully updated!");
     }
 
     localStorage.setItem('cupboard_v17_backend', JSON.stringify(backend));
     populateDropdowns();
     closeAdmin();
-    alert("Sabhi changes successfully save ho gaye hain!");
+    alert("All rates updated and saved successfully!");
   }
 
-  // Load initial dropdown values on page load
-  populateDropdowns();
+  window.onload = function() {
+    populateDropdowns();
+    toggleKitchenOptions();
+    adjustDefaultsForType();
+  };
 </script>
-
 </body>
 </html>
