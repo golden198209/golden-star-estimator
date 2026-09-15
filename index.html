@@ -68,7 +68,7 @@
     .section-header {
       font-size: 11px; font-weight: 800; letter-spacing: 0.8px;
       color: var(--accent); text-transform: uppercase;
-      margin: 14px 0 6px 0; display: flex; align-items: center; gap: 6px;
+      margin: 14px 0 6px 0; display: flex; align-items: center; justify-content: space-between;
     }
 
     /* DESIGN GALLERY CARDS */
@@ -95,6 +95,7 @@
       transition: all 0.2s;
       text-align: center;
       flex-shrink: 0;
+      position: relative;
     }
     .gallery-card:hover { border-color: var(--accent); transform: translateY(-2px); }
     .gallery-card img {
@@ -111,6 +112,10 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+    .zoom-hint {
+      position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6);
+      color: #fff; font-size: 9px; padding: 2px 5px; border-radius: 4px;
     }
 
     .dim-row { display: flex; gap: 10px; margin-bottom: 10px; }
@@ -183,15 +188,33 @@
       cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px;
     }
 
+    /* MODAL STYLES */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.75); justify-content: center; align-items: center;
-      z-index: 100; backdrop-filter: blur(4px);
+      background: rgba(0,0,0,0.85); justify-content: center; align-items: center;
+      z-index: 100; backdrop-filter: blur(5px); padding: 15px;
     }
     .modal-content {
       background: #fff; padding: 20px; border-radius: 18px;
       width: 92%; max-width: 440px; max-height: 88vh; overflow-y: auto;
     }
+    
+    /* FULL IMAGE VIEWER MODAL */
+    .image-modal-content {
+      position: relative; max-width: 90%; max-height: 90vh; text-align: center;
+    }
+    .image-modal-content img {
+      max-width: 100%; max-height: 80vh; border-radius: 12px; border: 2px solid var(--accent);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    }
+    .image-title {
+      color: #fff; margin-top: 10px; font-size: 16px; font-weight: 700;
+    }
+    .close-img-btn {
+      position: absolute; top: -40px; right: 0; background: #fff; color: #000;
+      border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; font-weight: bold; cursor: pointer;
+    }
+
     .admin-group { margin-bottom: 10px; }
     .admin-group label { font-size: 11px; font-weight: 700; color: var(--primary); }
     .admin-group input, .admin-group select { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 8px; margin-top: 2px; }
@@ -206,7 +229,7 @@
     @media print {
       body { background: #fff; color: #000; padding: 0; }
       .app-container { box-shadow: none; max-width: 100%; padding: 0; }
-      .header, .section-header, .dim-row, .select-box, .kitchen-section, .btn-calc, .action-btns, .rates-btn, .gallery-container { display: none !important; }
+      .header, .section-header, .dim-row, .select-box, .kitchen-section, .btn-calc, .action-btns, .rates-btn, .gallery-container, .modal { display: none !important; }
       .result-card { display: block !important; background: #fff !important; color: #000 !important; border: 1px solid #000; padding: 10px; margin: 0; }
       .res-row { color: #000 !important; }
       .res-row.highlight { background: #f0f0f0 !important; color: #000 !important; }
@@ -234,29 +257,35 @@
   </div>
 
   <!-- VISUAL DESIGN GALLERY / CATALOG -->
-  <div class="section-header"><i class="fa-solid fa-images"></i> Select Design Catalog</div>
+  <div class="section-header">
+    <span><i class="fa-solid fa-images"></i> Select Design Catalog</span>
+    <span style="font-size:9px; color:var(--text-muted); font-weight:600;">(Click to View Full Photo)</span>
+  </div>
   <div class="gallery-container">
-    <div class="gallery-card" onclick="applyPreset('wardrobe', 7.0, 8.0, 1.5, 4, 6, 2, 4, 'Custom Design Wardrobe')">
-      <!-- Aapki original uploaded photo -->
+    <div class="gallery-card" onclick="openFullImage('https://i.ibb.co/gBttHmy/cub.jpg', 'My Custom Design')">
+      <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
       <img src="https://i.ibb.co/gBttHmy/cub.jpg" alt="Custom Wardrobe Design">
-      <div class="title">My Custom Design</div>
+      <div class="title" onclick="event.stopPropagation(); applyPreset('wardrobe', 7.0, 8.0, 1.5, 4, 6, 2, 4, 'Custom Design Wardrobe');">My Design (Select)</div>
     </div>
-    <div class="gallery-card" onclick="applyPreset('wardrobe', 6, 4, 1.5, 2, 2, 1, 3, 'Standard Wardrobe')">
+    <div class="gallery-card" onclick="openFullImage('https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=800&auto=format&fit=crop&q=80', 'Standard Wardrobe')">
+      <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
       <img src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=300&auto=format&fit=crop&q=80" alt="Wardrobe">
-      <div class="title">Standard Wardrobe</div>
+      <div class="title" onclick="event.stopPropagation(); applyPreset('wardrobe', 6, 4, 1.5, 2, 2, 1, 3, 'Standard Wardrobe');">Standard (Select)</div>
     </div>
-    <div class="gallery-card" onclick="applyPreset('kitchen', 2.8, 8, 2.0, 2, 0, 1, 1, 'Modular Kitchen Unit')">
+    <div class="gallery-card" onclick="openFullImage('https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=800&auto=format&fit=crop&q=80', 'Modular Kitchen')">
+      <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
       <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=300&auto=format&fit=crop&q=80" alt="Kitchen">
-      <div class="title">Modular Kitchen</div>
+      <div class="title" onclick="event.stopPropagation(); applyPreset('kitchen', 2.8, 8, 2.0, 2, 0, 1, 1, 'Modular Kitchen Unit');">Kitchen (Select)</div>
     </div>
-    <div class="gallery-card" onclick="applyPreset('tvunit', 4, 6, 1.0, 2, 0, 2, 3, 'TV Entertainment Unit')">
+    <div class="gallery-card" onclick="openFullImage('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&auto=format&fit=crop&q=80', 'TV Entertainment Unit')">
+      <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
       <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=300&auto=format&fit=crop&q=80" alt="TV Unit">
-      <div class="title">TV Display Unit</div>
+      <div class="title" onclick="event.stopPropagation(); applyPreset('tvunit', 4, 6, 1.0, 2, 0, 2, 3, 'TV Entertainment Unit');">TV Unit (Select)</div>
     </div>
   </div>
 
   <!-- Cabinet / Design Type Selection -->
-  <div class="section-header"><i class="fa-solid fa-id-card"></i> Project Type</div>
+  <div class="section-header"><span><i class="fa-solid fa-id-card"></i> Project Type</span></div>
   <div class="select-box">
     <label>CABINET / DESIGN TYPE</label>
     <select id="cabinetType" onchange="toggleKitchenOptions(); adjustDefaultsForType();">
@@ -303,7 +332,7 @@
   </div>
 
   <!-- 1. Dimensions -->
-  <div class="section-header"><i class="fa-solid fa-ruler-combined"></i> 1. Outer Dimensions</div>
+  <div class="section-header"><span><i class="fa-solid fa-ruler-combined"></i> 1. Outer Dimensions</span></div>
   <div class="dim-row">
     <div class="input-box">
       <label>HEIGHT (FT)</label>
@@ -320,7 +349,7 @@
   </div>
 
   <!-- 2. Doors, Loft Shutters, Partitions & Shelves -->
-  <div class="section-header"><i class="fa-solid fa-door-open"></i> 2. Doors, Loft Shutters & Partitions</div>
+  <div class="section-header"><span><i class="fa-solid fa-door-open"></i> 2. Doors, Loft Shutters & Partitions</span></div>
   <div class="dim-row">
     <div class="input-box">
       <label>MAIN WARDROBE DOORS</label>
@@ -344,7 +373,7 @@
   </div>
 
   <!-- 3. Material, Mica & Liner Selection -->
-  <div class="section-header"><i class="fa-solid fa-layer-group"></i> 3. Materials, Outer & Liner Mica</div>
+  <div class="section-header"><span><i class="fa-solid fa-layer-group"></i> 3. Materials, Outer & Liner Mica</span></div>
   <div class="select-box">
     <label>INNER STRUCTURE / CARCASS (18mm)</label>
     <select id="carcassSelect"></select>
@@ -367,7 +396,7 @@
   </div>
 
   <!-- 4. Exact Hardware & Adhesives -->
-  <div class="section-header"><i class="fa-solid fa-screwdriver-wrench"></i> 4. Hardware & Adhesives Details</div>
+  <div class="section-header"><span><i class="fa-solid fa-screwdriver-wrench"></i> 4. Hardware & Adhesives Details</span></div>
   
   <div class="dim-row">
     <div class="input-box">
@@ -454,6 +483,15 @@
         <i class="fa-solid fa-file-pdf"></i> Download PDF
       </button>
     </div>
+  </div>
+</div>
+
+<!-- FULL SCREEN IMAGE VIEWER MODAL -->
+<div class="modal" id="imageModal" onclick="closeFullImage()">
+  <div class="image-modal-content" onclick="event.stopPropagation()">
+    <button class="close-img-btn" onclick="closeFullImage()">×</button>
+    <img id="fullScreenImg" src="" alt="Full Design View">
+    <div class="image-title" id="fullScreenTitle">Design Preview</div>
   </div>
 </div>
 
@@ -551,6 +589,16 @@
 
   let lastEstimate = null;
   let currentDesignTitle = "Custom Design Wardrobe";
+
+  function openFullImage(imgSrc, title) {
+    document.getElementById('fullScreenImg').src = imgSrc;
+    document.getElementById('fullScreenTitle').innerText = title;
+    document.getElementById('imageModal').style.display = 'flex';
+  }
+
+  function closeFullImage() {
+    document.getElementById('imageModal').style.display = 'none';
+  }
 
   function populateDropdowns() {
     fillSelect('carcassSelect', backend.carcass, '/sq.ft');
@@ -889,7 +937,7 @@
         let inputEl = document.getElementById(`rate_${cat}_${k}`);
         if (inputEl) {
           let val = parseFloat(inputEl.value);
-          if (!isNaN(val) && val > 0) {
+          if (!isNaN(val) > 0) {
             backend[cat][k] = val;
           }
         }
@@ -906,7 +954,7 @@
     backend.chimneyRate = parseFloat(document.getElementById('adm_chimney').value) || 8500;
     backend.hobRate = parseFloat(document.getElementById('adm_hob').value) || 11000;
 
-    let newPin = document.getElementById('newPinCode').value.trim();
+    let newPin = document.getElementById('newPinCode'].value.trim();
     if (newPin.length > 0) {
       backend.adminPin = newPin;
     }
