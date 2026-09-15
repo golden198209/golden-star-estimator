@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Golden Star Furniture - Estimator & Admin</title>
+  <title>Golden Star Furniture - Estimator & Catalog</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
     :root {
@@ -44,8 +44,8 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 15px;
-      padding-bottom: 12px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
       border-bottom: 1px solid var(--border);
     }
 
@@ -68,7 +68,49 @@
     .section-header {
       font-size: 11px; font-weight: 800; letter-spacing: 0.8px;
       color: var(--accent); text-transform: uppercase;
-      margin: 16px 0 8px 0; display: flex; align-items: center; gap: 6px;
+      margin: 14px 0 6px 0; display: flex; align-items: center; gap: 6px;
+    }
+
+    /* DESIGN GALLERY CARDS */
+    .gallery-container {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) var(--border);
+    }
+    .gallery-container::-webkit-scrollbar { height: 4px; }
+    .gallery-container::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+    .gallery-card {
+      min-width: 105px;
+      max-width: 105px;
+      background: #fdfbf7;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .gallery-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .gallery-card img {
+      width: 100%;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .gallery-card .title {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .dim-row { display: flex; gap: 10px; margin-bottom: 10px; }
@@ -164,7 +206,7 @@
     @media print {
       body { background: #fff; color: #000; padding: 0; }
       .app-container { box-shadow: none; max-width: 100%; padding: 0; }
-      .header, .section-header, .dim-row, .select-box, .kitchen-section, .btn-calc, .action-btns, .rates-btn { display: none !important; }
+      .header, .section-header, .dim-row, .select-box, .kitchen-section, .btn-calc, .action-btns, .rates-btn, .gallery-container { display: none !important; }
       .result-card { display: block !important; background: #fff !important; color: #000 !important; border: 1px solid #000; padding: 10px; margin: 0; }
       .res-row { color: #000 !important; }
       .res-row.highlight { background: #f0f0f0 !important; color: #000 !important; }
@@ -191,8 +233,29 @@
     </button>
   </div>
 
+  <!-- VISUAL DESIGN GALLERY / CATALOG -->
+  <div class="section-header"><i class="fa-solid fa-images"></i> Select Design Catalog</div>
+  <div class="gallery-container">
+    <div class="gallery-card" onclick="applyPreset('wardrobe', 6, 4, 1.5, 2, 1, 3, 'Modern Wardrobe')">
+      <img src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=300&auto=format&fit=crop&q=80" alt="Wardrobe">
+      <div class="title">Standard Wardrobe</div>
+    </div>
+    <div class="gallery-card" onclick="applyPreset('wardrobe', 7, 6, 2.0, 3, 2, 4, 'Sliding Glass Wardrobe')">
+      <img src="https://images.unsplash.com/photo-1558997519-83ea9252dfac?w=300&auto=format&fit=crop&q=80" alt="Sliding">
+      <div class="title">Sliding Wardrobe</div>
+    </div>
+    <div class="gallery-card" onclick="applyPreset('kitchen', 2.8, 8, 2.0, 2, 1, 1, 'Modular Kitchen Unit')">
+      <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=300&auto=format&fit=crop&q=80" alt="Kitchen">
+      <div class="title">Modular Kitchen</div>
+    </div>
+    <div class="gallery-card" onclick="applyPreset('tvunit', 4, 6, 1.0, 2, 2, 3, 'TV Entertainment Unit')">
+      <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=300&auto=format&fit=crop&q=80" alt="TV Unit">
+      <div class="title">TV Display Unit</div>
+    </div>
+  </div>
+
   <!-- Cabinet / Design Type Selection -->
-  <div class="section-header"><i class="fa-solid fa-id-card"></i> Select Project Type</div>
+  <div class="section-header"><i class="fa-solid fa-id-card"></i> Project Type</div>
   <div class="select-box">
     <label>CABINET / DESIGN TYPE</label>
     <select id="cabinetType" onchange="toggleKitchenOptions(); adjustDefaultsForType();">
@@ -335,7 +398,7 @@
   <div class="result-card" id="resultCard">
     <div style="text-align:center; margin-bottom:10px; border-bottom:1px solid #5c4132; padding-bottom:6px;">
       <h3 style="margin:0; font-size:16px; color:var(--accent);">GOLDEN STAR FURNITURE</h3>
-      <p style="margin:2px 0 0 0; font-size:10px; color:#d1c2b5;">Official Project Quotation Summary</p>
+      <p style="margin:2px 0 0 0; font-size:10px; color:#d1c2b5;" id="designTitleText">Official Project Quotation Summary</p>
     </div>
     <div class="res-row"><span>Project Type:</span><strong id="projTypeText">Standard Wardrobe</strong></div>
     <div class="res-row"><span>Front Size:</span><strong id="sqftText">0 Sq. Ft.</strong></div>
@@ -465,7 +528,7 @@
     backing: { '6mm Commercial Back Ply': 30, '6mm Marine Back Ply': 45, '8mm HDMR Backing': 50 },
     
     labourRate: 300,        
-    hingeRate: 150,           // 150 per hinge cost
+    hingeRate: 150,           
     lockRate: 300,          
     fevicolRate: 600,       
     heatxRate: 600,
@@ -481,10 +544,11 @@
     adminPin: '1234'
   };
 
-  let backend = JSON.parse(localStorage.getItem('cupboard_v20_backend')) || defaultBackend;
+  let backend = JSON.parse(localStorage.getItem('cupboard_v21_backend')) || defaultBackend;
   backend.labourRate = 300;
 
   let lastEstimate = null;
+  let currentDesignTitle = "Standard Wardrobe";
 
   function populateDropdowns() {
     fillSelect('carcassSelect', backend.carcass, '/sq.ft');
@@ -512,9 +576,24 @@
     }
   }
 
+  function applyPreset(type, h, w, d, doors, partitions, shelves, title) {
+    currentDesignTitle = title;
+    document.getElementById('cabinetType').value = type;
+    toggleKitchenOptions();
+    document.getElementById('height').value = h;
+    document.getElementById('width').value = w;
+    document.getElementById('depth').value = d;
+    document.getElementById('doorCount').value = doors;
+    document.getElementById('partitions').value = partitions;
+    document.getElementById('shelves').value = shelves;
+    updateHingesCount();
+    calculate();
+  }
+
   function adjustDefaultsForType() {
     let type = document.getElementById('cabinetType').value;
     if (type === 'kitchen') {
+      currentDesignTitle = "Modular Kitchen Base Unit";
       document.getElementById('height').value = "2.8";
       document.getElementById('depth').value = "2.0";
       document.getElementById('partitions').value = "1";
@@ -522,6 +601,7 @@
       document.getElementById('doorCount').value = "2";
       document.getElementById('drawerCount').value = "2";
     } else if (type === 'tvunit') {
+      currentDesignTitle = "TV Display Unit";
       document.getElementById('height').value = "4.0";
       document.getElementById('depth').value = "1.0";
       document.getElementById('partitions').value = "2";
@@ -529,6 +609,7 @@
       document.getElementById('doorCount').value = "2";
       document.getElementById('drawerCount').value = "1";
     } else {
+      currentDesignTitle = "Standard Wardrobe";
       document.getElementById('height').value = "6.0";
       document.getElementById('depth').value = "1.5";
       document.getElementById('partitions').value = "1";
@@ -541,7 +622,6 @@
 
   function updateHingesCount() {
     let doors = parseInt(document.getElementById('doorCount').value) || 0;
-    // Automatic 3 hinges per door calculation
     let totalHinges = doors * 3;
     document.getElementById('hingeCount').value = totalHinges;
   }
@@ -557,7 +637,7 @@
     let numDoors = parseInt(document.getElementById('doorCount').value) || 0;
     let numPartitions = parseInt(document.getElementById('partitions').value) || 0;
     let numShelves = parseInt(document.getElementById('shelves').value) || 0;
-    let numHinges = numDoors * 3; // 3 hinges per door automatically
+    let numHinges = numDoors * 3;
     let numLocks = parseInt(document.getElementById('lockCount').value) || 0;
     let drawers = parseInt(document.getElementById('drawerCount').value) || 0;
 
@@ -605,7 +685,6 @@
     let edgeCost = backend.edgeBandingRate; 
     let extraHwCost = backend.extraHardwareFixed;
 
-    // Kitchen Accessories cost calculation
     let kitchenAccCost = 0;
     if (type === 'kitchen') {
       let basketsCount = parseInt(document.getElementById('kitchenBaskets').value) || 0;
@@ -644,6 +723,7 @@
 
     let grandTotal = carcassTotalCost + doorTotalCost + micaTotalCost + linerMicaTotalCost + backTotalCost + labourCost + totalHardwareCost + drawerTotalCost;
 
+    document.getElementById('designTitleText').innerText = `Design: ${currentDesignTitle}`;
     document.getElementById('projTypeText').innerText = typeNames[type] || "Standard Wardrobe";
     document.getElementById('sqftText').innerText = `${frontSqft.toFixed(1)} Sq. Ft.`;
     document.getElementById('doorsInfoText').innerText = `${numDoors} Doors (${numHinges} Hinges)`;
@@ -688,7 +768,7 @@
 
     document.getElementById('resultCard').style.display = 'block';
 
-    lastEstimate = { type: typeNames[type], h, w, d, frontSqft, numDoors, numHinges, plywoodSheetsCount, doorSheetsCount, outerMicaSheetsCount, linerMicaSheetsCount, backSheetsCount, kitchenAccCost, grandTotal };
+    lastEstimate = { title: currentDesignTitle, type: typeNames[type], h, w, d, frontSqft, numDoors, numHinges, plywoodSheetsCount, doorSheetsCount, outerMicaSheetsCount, linerMicaSheetsCount, backSheetsCount, kitchenAccCost, grandTotal };
   }
 
   function downloadPDF() {
@@ -701,7 +781,7 @@
       `📍 _Xchange Road Lalchowk, Near Aadhar Center_%0A` +
       `📞 _Phone: 7006688390_%0A` +
       `----------------------------%0A` +
-      `📋 *${lastEstimate.type.toUpperCase()} QUOTATION*%0A` +
+      `📋 *QUOTATION: ${lastEstimate.title.toUpperCase()}*%0A` +
       `----------------------------%0A` +
       `📏 *Size:* ${lastEstimate.h}ft x ${lastEstimate.w}ft (Depth: ${lastEstimate.d}ft)%0A` +
       `📐 *Front Area:* ${lastEstimate.frontSqft.toFixed(1)} Sq.Ft%0A` +
@@ -821,7 +901,7 @@
       backend.adminPin = newPin;
     }
 
-    localStorage.setItem('cupboard_v20_backend', JSON.stringify(backend));
+    localStorage.setItem('cupboard_v21_backend', JSON.stringify(backend));
     populateDropdowns();
     closeAdmin();
     alert("Sabhi rates successfully update ho gaye hain!");
