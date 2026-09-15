@@ -274,11 +274,11 @@
   </div>
   <div class="gallery-container">
     <div class="gallery-card">
-      <div class="img-box" onclick="openFullImage('https://images.unsplash.com/photo-1558997541-bcf6fca8e4c1?w=800&auto=format&fit=crop&q=80', 'Custom Wood Wardrobe')">
+      <div class="img-box" onclick="openFullImage('data:image/jpeg;base64,...', 'Aapka Design (Custom Wardrobe)')">
         <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
-        <img src="https://images.unsplash.com/photo-1558997541-bcf6fca8e4c1?w=300&auto=format&fit=crop&q=80" alt="Custom Design">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=" alt="Aapka Design">
       </div>
-      <div class="title" onclick="applyPreset('wardrobe', 7.0, 8.0, 1.5, 4, 6, 2, 4, 'Custom Design Wardrobe');">My Design (Select)</div>
+      <div class="title" onclick="applyPreset('wardrobe', 7.5, 9.0, 1.5, 6, 6, 2, 4, 'Aapka Special Grey Wardrobe');">Aapka Design (Select)</div>
     </div>
     <div class="gallery-card">
       <div class="img-box" onclick="openFullImage('https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=800&auto=format&fit=crop&q=80', 'Standard Wardrobe')">
@@ -355,11 +355,11 @@
   <div class="dim-row">
     <div class="input-box">
       <label>HEIGHT (FT)</label>
-      <input type="number" id="height" value="7" step="0.1">
+      <input type="number" id="height" value="7.5" step="0.1">
     </div>
     <div class="input-box">
       <label>WIDTH (FT)</label>
-      <input type="number" id="width" value="8" step="0.1">
+      <input type="number" id="width" value="9" step="0.1">
     </div>
     <div class="input-box">
       <label>DEPTH (FT)</label>
@@ -372,7 +372,7 @@
   <div class="dim-row">
     <div class="input-box">
       <label>MAIN WARDROBE DOORS</label>
-      <input type="number" id="doorCount" value="4" min="0" oninput="updateHingesCount()">
+      <input type="number" id="doorCount" value="6" min="0" oninput="updateHingesCount()">
     </div>
     <div class="input-box">
       <label>TOP LOFT / SMALL DOORS</label>
@@ -431,7 +431,7 @@
   <div class="dim-row">
     <div class="input-box">
       <label>TOTAL HINGES (AUTO 3 PER DOOR)</label>
-      <input type="number" id="hingeCount" value="30" readonly style="color:var(--accent);">
+      <input type="number" id="hingeCount" value="36" readonly style="color:var(--accent);">
     </div>
     <div class="input-box">
       <label>LOCKS NEEDED (PCS)</label>
@@ -603,11 +603,14 @@
     adminPin: '1234'
   };
 
-  let backend = JSON.parse(localStorage.getItem('cupboard_v22_backend')) || defaultBackend;
+  let backend = JSON.parse(localStorage.getItem('cupboard_v23_backend')) || defaultBackend;
   backend.labourRate = 300;
 
   let lastEstimate = null;
-  let currentDesignTitle = "Custom Design Wardrobe";
+  let currentDesignTitle = "Aapka Special Grey Wardrobe";
+
+  // Base64 string aapki di gayi photo ki
+  const userUploadedImageBase64 = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=";
 
   function openFullImage(imgSrc, title) {
     document.getElementById('fullScreenImg').src = imgSrc;
@@ -681,13 +684,13 @@
       document.getElementById('loftDoorCount').value = "0";
       document.getElementById('drawerCount').value = "1";
     } else {
-      currentDesignTitle = "Custom Design Wardrobe";
-      document.getElementById('height').value = "7.0";
-      document.getElementById('width').value = "8.0";
+      currentDesignTitle = "Aapka Special Grey Wardrobe";
+      document.getElementById('height').value = "7.5";
+      document.getElementById('width').value = "9.0";
       document.getElementById('depth').value = "1.5";
       document.getElementById('partitions').value = "2";
       document.getElementById('shelves').value = "4";
-      document.getElementById('doorCount').value = "4";
+      document.getElementById('doorCount').value = "6";
       document.getElementById('loftDoorCount').value = "6";
       document.getElementById('drawerCount').value = "3";
     }
@@ -913,6 +916,7 @@
       <div class="admin-group"><label>HeatX Rate (₹ / Kg)</label><input type="number" id="adm_heatx" value="${backend.heatxRate || 600}"></div>
       <div class="admin-group"><label>SS Basket Rate (₹ / Pcs)</label><input type="number" id="adm_basket" value="${backend.basketRate || 1500}"></div>
       <div class="admin-group"><label>Bottle Pull-out Rate (₹)</label><input type="number" id="adm_pullout" value="${backend.bottlePulloutRate || 3500}"></div>
+      <div class="num-group" style="display:none;"><label>Chimney Rate (₹)</label><input type="number" id="adm_chimney" value="${backend.chimneyRate || 8500}"></div>
       <div class="admin-group"><label>Chimney Rate (₹)</label><input type="number" id="adm_chimney" value="${backend.chimneyRate || 8500}"></div>
       <div class="admin-group"><label>Built-in Hob Rate (₹)</label><input type="number" id="adm_hob" value="${backend.hobRate || 11000}"></div>
     `;
@@ -966,7 +970,7 @@
     backend.labourRate = parseFloat(document.getElementById('adm_labour').value) || backend.labourRate;
     backend.hingeRate = parseFloat(document.getElementById('adm_hinge').value) || backend.hingeRate;
     backend.lockRate = parseFloat(document.getElementById('adm_lock').value) || backend.lockRate;
-    backend.fevicolRate = parseFloat(document.getElementById('adm_fevicol').value) || 600;
+    backend.fevicolRaw = parseFloat(document.getElementById('adm_fevicol').value) || 600;
     backend.heatxRate = parseFloat(document.getElementById('adm_heatx').value) || 600;
     backend.basketRate = parseFloat(document.getElementById('adm_basket').value) || 1500;
     backend.bottlePulloutRate = parseFloat(document.getElementById('adm_pullout').value) || 3500;
@@ -975,10 +979,10 @@
 
     let newPin = document.getElementById('newPinCode').value.trim();
     if (newPin.length > 0) {
-      backend.adminPin = newPin;
+      backend.adminPIN = newPin;
     }
 
-    localStorage.setItem('cupboard_v22_backend', JSON.stringify(backend));
+    localStorage.setItem('cupboard_v23_backend', JSON.stringify(backend));
     populateDropdowns();
     closeAdmin();
     alert("Sabhi rates successfully update ho gaye hain!");
